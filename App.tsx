@@ -7,7 +7,7 @@ import { enableScreens } from 'react-native-screens';
 import HomeScreen from './screens/HomeScreen';
 
 const client = new ApolloClient({
-  uri: '192.168.1.47',
+  uri: 'http://192.168.1.47/graphql',
   cache: new InMemoryCache(),
 });
 

@@ -4,24 +4,32 @@ import { useQuery, gql } from '@apollo/client';
 
 
 const GET_LESSONS = gql`
-  query lessons {
+ query Lessons {
+  lessons {
     _id
     name
     startDate
     endDate
+    users {
+      _id
+      username
+      email
+    }
   }
+}
 `;
 
 const GetAllLessons = () => {
     const {loading, error, data} = useQuery(GET_LESSONS);
 
     if(error) {
+        console.log({error})
         throw new Error(error.message)
     }
 
     return {
         loading,
-        data
+        data,
     }
 }
 
@@ -30,7 +38,10 @@ const HomeScreen = () => {
     const { loading, data } = GetAllLessons()
 
     if (loading) console.log('loading...')
-    if(data) console.log({data})
+    if(data) {
+      console.log(data)
+    }
+
     return (
         <View style={styles.screen}>
             <Text>Hello world</Text>
