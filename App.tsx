@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from '@apollo/client';
 import { AppRegistry } from 'react-native';
 import { enableScreens } from 'react-native-screens';
+import HomeScreen from './screens/HomeScreen';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000',
+  uri: 'http://192.168.1.47/graphql',
   cache: new InMemoryCache(),
 });
 
@@ -15,10 +16,7 @@ enableScreens();
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <View style={styles.container}>
-        <Text>Open up App.tsx to start working on your app!</Text>
-        <StatusBar style='auto' />
-      </View>
+      <HomeScreen />
     </ApolloProvider>
   );
 }
