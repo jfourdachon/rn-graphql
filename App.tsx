@@ -1,16 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from '@apollo/client';
+import { StyleSheet } from 'react-native';
+import { ApolloProvider } from '@apollo/client';
 import { AppRegistry } from 'react-native';
 import { enableScreens } from 'react-native-screens';
-import HomeScreen from './screens/HomeScreen';
 import AppNavigator from './navigation/AppNavigator';
+import client from './store';
 
-const client = new ApolloClient({
-  uri: 'http://192.168.1.47/graphql',
-  cache: new InMemoryCache(),
-});
 
 enableScreens();
 
