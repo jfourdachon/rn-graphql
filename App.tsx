@@ -5,6 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from '@apo
 import { AppRegistry } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import HomeScreen from './screens/HomeScreen';
+import AppNavigator from './navigation/AppNavigator';
 
 const client = new ApolloClient({
   uri: 'http://192.168.1.47/graphql',
@@ -16,7 +17,7 @@ enableScreens();
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <HomeScreen />
+      <AppNavigator />
     </ApolloProvider>
   );
 }

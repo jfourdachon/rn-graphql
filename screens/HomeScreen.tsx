@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { useQuery, gql } from '@apollo/client';
 
 
+//TODO put apollo stuff in a store folder
+
 const GET_LESSONS = gql`
  query Lessons {
   lessons {
