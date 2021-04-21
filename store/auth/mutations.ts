@@ -10,13 +10,30 @@ const SIGNUP = gql`
     }
 `;
 
+
+interface SignupValues {
+    email: String
+    username: String
+    isVegetarian: Boolean
+    password: String
+}
+
+
+interface SignupData {
+    _id: String
+    email: String
+    username: String
+    isVegetarian: Boolean
+}
+
+
 export const useSignup = () => {
-    const [signup] = useMutation(SIGNUP);
-    return async (email: string, username: string, password: string, isVegetarian: boolean ) => {
+    const [signup, {loading}] = useMutation<{signup: SignupData}, {createUserDto: SignupValues}>(SIGNUP);
+    return async (email: string, password: string, username: string, isVegetarian: boolean ) => {
         try {
             
-     
-        const [data, loading] = await signup({
+     //TODO https://www.apollographql.com/docs/react/development-testing/static-typing/
+        const {data} = await signup({
             variables: {
                 createUserDto: {
                     email,

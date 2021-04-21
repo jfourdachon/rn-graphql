@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { Button, StyleSheet, Text, TextInput, View, Switch, Alert, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParam } from '../navigation/AuthNavigator';
-import {signup, signupError, signupLoading, signupData} from '../store/auth/mutations'
+import { useSignup } from '../store/auth/mutations';
 
 type AuthScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Auth'>;
 
@@ -28,10 +28,16 @@ interface FormValuesErrors {
 const AuthScreen = ({ navigation }: Props) => {
   const [isVegetarian, setIsVegetarian] = useState(false);
   const toggleSwitch = () => setIsVegetarian((previousState) => !previousState);
+  const signup = useSignup();
 
-
-  const handleSignUp = (values: FormValues) => {
-    signup({variables: {createUserDto: {email: values.email, password: values.password, username: values.username, isVegetarian: values.isVegetarian}}})
+  const handleSignUp = async (values: FormValues) => {
+    const {data, loading} = await signup(values.email, values.password, values.username, values.isVegetarian);
+    if (loading) {
+        console.log('loading...')
+    }
+    if (data) {
+        console.log(data)
+    }
     Alert.alert('Submit', values.email, [{ text: 'Okay' }]);
   };
 
@@ -75,18 +81,6 @@ const AuthScreen = ({ navigation }: Props) => {
       handleSignUp(values);
     },
   });
-
-  if (signupData) {
-      console.log({signupData})
-  }
-
-  if (signupLoading) {
-      console.log('loading...')
-  }
-
-  if (signupError) {
-      console.log({signupError})
-  }
 
   return (
     <View style={styles.screen}>
