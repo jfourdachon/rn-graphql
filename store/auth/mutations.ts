@@ -37,7 +37,7 @@ const SIGNUP = gql`
 
 
 export const useSignup = () => {
-    const [signup, { loading }] = useMutation(SIGNUP);
+    const [signup, { loading }] = useMutation<{ signup: SignupData }, { createUserDto: CreateUserDto }>(SIGNUP);
     return async (variables: CreateUserDto) => {
         try {
             const {
