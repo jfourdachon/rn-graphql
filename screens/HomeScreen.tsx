@@ -3,6 +3,21 @@ import { StyleSheet, Text, View } from 'react-native'
 import { useQuery, gql } from '@apollo/client';
 
 
+//TODO put apollo stuff in a store folder
+
+interface User {
+    _id: String
+    username: String,
+    email: String
+}
+interface Lessons {
+    _id: String
+    name: String,
+    startDate: String
+    endDate: String
+    users: User[]
+}
+
 const GET_LESSONS = gql`
  query Lessons {
   lessons {
@@ -20,7 +35,7 @@ const GET_LESSONS = gql`
 `;
 
 const GetAllLessons = () => {
-    const {loading, error, data} = useQuery(GET_LESSONS);
+    const {loading, error, data} = useQuery<Lessons>(GET_LESSONS);
 
     if(error) {
         console.log({error})
