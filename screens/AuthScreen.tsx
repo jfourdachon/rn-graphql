@@ -31,12 +31,13 @@ const AuthScreen = ({ navigation }: Props) => {
   const signup = useSignup();
 
   const handleSignUp = async (values: FormValues) => {
-    const {data, loading} = await signup(values.email, values.password, values.username, values.isVegetarian);
+    const { email, password, username } = values;
+    const { data, loading } = await signup({ email, password, username, isVegetarian });
     if (loading) {
-        console.log('loading...')
+      console.log('loading...');
     }
     if (data) {
-        console.log(data)
+      console.log(data);
     }
     Alert.alert('Submit', values.email, [{ text: 'Okay' }]);
   };
@@ -65,7 +66,6 @@ const AuthScreen = ({ navigation }: Props) => {
     } else if (values.password.length < 6) {
       errors.password = 'Invalid password, at least 6 characters';
     }
-
     return errors;
   };
 
@@ -81,44 +81,21 @@ const AuthScreen = ({ navigation }: Props) => {
       handleSignUp(values);
     },
   });
+  console.log({isVegetarian})
 
   return (
     <View style={styles.screen}>
-      <TextInput
-        style={styles.input}
-        placeholder='email'
-        onChangeText={formik.handleChange('email')}
-        value={formik.values.email}
-        onBlur={formik.handleBlur('email')}
-      />
+      <TextInput style={styles.input} placeholder='email' onChangeText={formik.handleChange('email')} value={formik.values.email} onBlur={formik.handleBlur('email')} />
       {formik.touched.email && formik.errors.email ? <Text>{formik.errors.email}</Text> : null}
-      <TextInput
-        style={styles.input}
-        placeholder='username'
-        onChangeText={formik.handleChange('username')}
-        value={formik.values.username}
-        onBlur={formik.handleBlur('username')}
-      />
+      <TextInput style={styles.input} placeholder='username' onChangeText={formik.handleChange('username')} value={formik.values.username} onBlur={formik.handleBlur('username')} />
       {formik.touched.username && formik.errors.username ? <Text>{formik.errors.username}</Text> : null}
-      <TextInput
-        style={styles.input}
-        placeholder='password'
-        onChangeText={formik.handleChange('password')}
-        value={formik.values.password}
-        onBlur={formik.handleBlur('password')}
-      />
+      <TextInput style={styles.input} placeholder='password' onChangeText={formik.handleChange('password')} value={formik.values.password} onBlur={formik.handleBlur('password')} />
       {formik.touched.password && formik.errors.password ? <Text>{formik.errors.password}</Text> : null}
       <View style={styles.switchContainer}>
         <Text style={styles.switchText}>Are you vegetarian?</Text>
-        <Switch
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={isVegetarian ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor='#3e3e3e'
-          onValueChange={toggleSwitch}
-          value={isVegetarian}
-        />
+        <Switch trackColor={{ false: '#767577', true: '#81b0ff' }} thumbColor={isVegetarian ? '#f5dd4b' : '#f4f3f4'} ios_backgroundColor='#3e3e3e' onValueChange={toggleSwitch} value={isVegetarian} />
       </View>
-      <Button title='Valider' onPress={handleSignUp as (values: any) => void} />
+      <Button title='Valider' onPress={() => handleSignUp(formik.values)} />
     </View>
   );
 };

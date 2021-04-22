@@ -1,14 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 
 
-const SIGNUP = gql`
-    mutation Signup($email: String!, $username: String!, $password: String!, $isVegetarian: Boolean) {
-        signup(createUserDto: {email: $email, username: $username, password: $password, isVegetarian: $isVegetarian}) {
-            email
-            username
-        }
-    }
-`;
+
 
 
 interface SignupValues {
@@ -26,26 +19,47 @@ interface SignupData {
     isVegetarian: Boolean
 }
 
+interface CreateUserDto {
+    email: String
+    username: String
+    isVegetarian: Boolean
+    password: String
+}
+
+
+const SIGNUP = gql`
+  mutation saveRocket($createUserDto: CreateUserDto!) {
+    signup(createUserDto: $createUserDto) {
+      username
+    }
+  }
+`;
+
 
 export const useSignup = () => {
-    const [signup, {loading}] = useMutation<{signup: SignupData}, {createUserDto: SignupValues}>(SIGNUP);
-    return async (email: string, password: string, username: string, isVegetarian: boolean ) => {
+    const [signup, { loading }] = useMutation(SIGNUP);
+    return async (variables: CreateUserDto) => {
         try {
-            
-     //TODO https://www.apollographql.com/docs/react/development-testing/static-typing/
-        const {data} = await signup({
-            variables: {
-                createUserDto: {
-                    email,
-                    username,
-                    password, 
-                    isVegetarian
+            const {
+                email,
+                username,
+                password,
+                isVegetarian
+            } = variables
+            //TODO https://www.apollographql.com/docs/react/development-testing/static-typing/
+            const { data } = await signup({
+                variables: {
+                    createUserDto: {
+                        email,
+                        username,
+                        password,
+                        isVegetarian
+                    }
                 }
-            }
-        })
-        return {data, loading}
-    } catch (error) {
+            })
+            return { data, loading }
+        } catch (error) {
             throw new Error(error)
-    }
+        }
     }
 }
