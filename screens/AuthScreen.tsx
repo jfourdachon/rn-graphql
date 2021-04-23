@@ -81,7 +81,6 @@ const AuthScreen = ({ navigation }: Props) => {
       handleSignUp(values);
     },
   });
-  console.log({isVegetarian})
 
   return (
     <View style={styles.screen}>
