@@ -8,17 +8,17 @@ interface SignupData {
     isVegetarian: Boolean
 }
 
-interface SignUpDto {
+interface SignupDto {
     email: String
     username: String
     isVegetarian: Boolean
-    password: String
+    password: String,
 }
 
 
 const SIGNUP = gql`
-  mutation Signup($signUpDto: SignUpDto!) {
-    signup(signUpDto: $signUpDto) {
+  mutation Signup($signupDto: SignupDto!) {
+    signup(signupDto: $signupDto) {
       username
     }
   }
@@ -26,28 +26,33 @@ const SIGNUP = gql`
 
 
 export const useSignup = () => {
-    const [signup, { loading }] = useMutation<{ signup: SignupData }, { signUpDto: SignUpDto }>(SIGNUP);
-    return async (variables: SignUpDto) => {
+    const [signup] = useMutation(SIGNUP);
+    return async (variables: SignupDto) => {
         try {
+            console.log({ variables })
             const {
                 email,
                 username,
                 password,
                 isVegetarian
             } = variables
-            const { data } = await signup({
+  
+
+            const { data, } = await signup({
                 variables: {
-                    signUpDto: {
+                    signupDto: {
                         email,
                         username,
                         password,
                         isVegetarian
                     }
-                }
+                },
             })
-            return { data, loading }
+            return { data }
         } catch (error) {
-            throw new Error(error)
+            return {
+                error
+            }
         }
     }
 }
@@ -76,8 +81,8 @@ const LOGIN = gql`
 
 
 export const useLogin = () => {
-    const [login, { loading }] = useMutation<{ login: LoginData }, { loginDto: LoginDto }>(LOGIN);
-    return async (variables: SignUpDto) => {
+    const [login] = useMutation<{ login: LoginData }, { loginDto: LoginDto }>(LOGIN);
+    return async (variables: LoginDto) => {
         try {
             const {
                 email,
@@ -91,9 +96,9 @@ export const useLogin = () => {
                     }
                 }
             })
-            return { data, loading }
+            return { data }
         } catch (error) {
-            throw new Error(error)
+            return { error }
         }
     }
 }
@@ -108,7 +113,7 @@ interface ResetPasswordRequestDto {
 }
 
 const FORGOT_PASSWORD_REQUEST = gql`
-    mutation ResetPasswordRequest($resetPasswordRequestDto, ResetPasswordRequestDto!) {
+    mutation ResetPasswordRequest($resetPasswordRequestDto: ResetPasswordRequestDto!) {
         resetPasswordRequest(resetPasswordRequestDto: $resetPasswordRequestDto) {
             isRequestAccepted
         }
