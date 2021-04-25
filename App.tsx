@@ -4,7 +4,7 @@ import { ApolloProvider } from '@apollo/client';
 import { AppRegistry } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import AppNavigator from './navigation/AppNavigator';
-import client from './store';
+import client from './store/initApolloClient';
 
 
 enableScreens();

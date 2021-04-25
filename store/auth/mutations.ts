@@ -17,7 +17,7 @@ interface SignUpDto {
 
 
 const SIGNUP = gql`
-  mutation saveRocket($signUpDto: SignUpDto!) {
+  mutation Signup($signUpDto: SignUpDto!) {
     signup(signUpDto: $signUpDto) {
       username
     }
@@ -67,8 +67,8 @@ interface LoginDto {
 
 
 const LOGIN = gql`
-  mutation saveRocket($signUpDto: LoginDto!) {
-    signup(signUpDto: $signUpDto) {
+  mutation Login($loginDto: LoginDto!) {
+    login(loginDto: $loginDto) {
       username
     }
   }
@@ -93,6 +93,42 @@ export const useLogin = () => {
             })
             return { data, loading }
         } catch (error) {
+            throw new Error(error)
+        }
+    }
+}
+
+
+interface ResetPasswordRequestData {
+    isRequestAccepted: Boolean
+}
+
+interface ResetPasswordRequestDto {
+    email: String
+}
+
+const FORGOT_PASSWORD_REQUEST = gql`
+    mutation ResetPasswordRequest($resetPasswordRequestDto, ResetPasswordRequestDto!) {
+        resetPasswordRequest(resetPasswordRequestDto: $resetPasswordRequestDto) {
+            isRequestAccepted
+        }
+    }
+`;
+
+
+export const useResetPasswordRequest = () => {
+    const [forgotPasswordRequest] = useMutation<{ data: ResetPasswordRequestData }, { resetPasswordRequestDto: ResetPasswordRequestDto }>(FORGOT_PASSWORD_REQUEST)
+    return async (variables: ResetPasswordRequestDto) => {
+        try {
+            const { email } = variables
+            const { data } = await forgotPasswordRequest({
+                variables: {
+                    resetPasswordRequestDto: { email }
+                }
+            })
+            return { data }
+        }
+        catch (error) {
             throw new Error(error)
         }
     }

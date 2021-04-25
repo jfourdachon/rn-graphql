@@ -4,6 +4,7 @@ import { Button, StyleSheet, Text, TextInput, View, Switch, Alert, Dimensions } 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParam } from '../navigation/AuthNavigator';
 import { useSignup } from '../store/auth/mutations';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type AuthScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Auth'>;
 
@@ -96,6 +97,7 @@ const AuthScreen = ({ navigation }: Props) => {
         <Switch trackColor={{ false: '#767577', true: '#81b0ff' }} thumbColor={isVegetarian ? '#f5dd4b' : '#f4f3f4'} ios_backgroundColor='#3e3e3e' onValueChange={toggleSwitch} value={isVegetarian} />
       </View>
       <Button title='Valider' onPress={() => handleSignUp(formik.values)} />
+      <TouchableOpacity style={styles.forgotPasswordContainer}><Text>Forgot password?</Text></TouchableOpacity>
     </View>
   );
 };
@@ -126,4 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ece7e7',
     marginVertical: 10,
   },
+  forgotPasswordContainer: {
+      marginTop: 15
+  }
 });
