@@ -1,8 +1,9 @@
-import { ApolloClient, createHttpLink, InMemoryCache, from } from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache,from } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 import { setContext } from '@apollo/client/link/context';
 import { API_URL, API_CREDENTIALS } from "@env";
-import AsyncStorage from '@react-native-community/async-storage';
+import * as SecureStore from 'expo-secure-store';
+
 
 
 const httpLink = createHttpLink({
@@ -11,7 +12,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = AsyncStorage.getItem('token');
+    const token = SecureStore.getItemAsync('token')
     // return the headers to the context so httpLink can read them
     return {
         headers: {
@@ -33,7 +34,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   });
 
 const client = new ApolloClient({
-    link: from([authLink, errorLink, httpLink]),
+    link: from([errorLink, authLink, httpLink]),
     cache: new InMemoryCache(),
     credentials: API_CREDENTIALS
 });
