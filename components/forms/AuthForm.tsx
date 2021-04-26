@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 import { Button, StyleSheet, Text, TextInput, View, Switch, Alert, Dimensions } from 'react-native';
 import { useLogin, useSignup } from '../../store/auth/mutations';
 import { Colors } from '../../contants/Colors';
@@ -65,33 +67,19 @@ const AuthForm = ({ isLogin }: Props) => {
     }
   } 
 
-  const validate = (values: SignupValues) => {
-    const errors: FormValuesErrors = {
-      email: '',
-      password: '',
-      isVegetarian: '',
-      username: '',
-    };
-    //TODO see yup to validate form
-    if (!values.email) {
-      errors.email = 'Required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address';
-    }
+  const authFormSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required'),
+    password: Yup.string()
+      .min(5, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+  });
+  
 
-    if (!values.username) {
-      errors.username = 'Required';
-    } else if (values.username.length < 3) {
-      errors.username = 'Min 3 characters';
-    }
-
-    if (!values.password) {
-      errors.password = 'Required';
-    } else if (values.password.length < 5) {
-      errors.password = 'Invalid password, at least 6 characters';
-    }
-    return errors;
-  };
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -99,7 +87,8 @@ const AuthForm = ({ isLogin }: Props) => {
       password: '',
       isVegetarian: false,
     },
-    validate,
+    // validate,
+    validationSchema: authFormSchema,
     onSubmit: (values) => {
       isLogin ? handleLogin(values) : handleSignUp(values);
     },
