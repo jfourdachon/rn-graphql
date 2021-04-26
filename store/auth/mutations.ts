@@ -108,13 +108,13 @@ interface ResetPasswordRequestData {
     isRequestAccepted: Boolean
 }
 
-interface ResetPasswordRequestDto {
+interface ForgotPasswordRequestDto {
     email: String
 }
 
 const FORGOT_PASSWORD_REQUEST = gql`
-    mutation ResetPasswordRequest($resetPasswordRequestDto: ResetPasswordRequestDto!) {
-        resetPasswordRequest(resetPasswordRequestDto: $resetPasswordRequestDto) {
+    mutation ResetPasswordRequest($forgotPasswordRequestDto: ForgotPasswordRequestDto!) {
+        resetPasswordRequest(forgotPasswordRequestDto: $forgotPasswordRequestDto) {
             isRequestAccepted
         }
     }
@@ -122,13 +122,13 @@ const FORGOT_PASSWORD_REQUEST = gql`
 
 
 export const useResetPasswordRequest = () => {
-    const [forgotPasswordRequest] = useMutation<{ data: ResetPasswordRequestData }, { resetPasswordRequestDto: ResetPasswordRequestDto }>(FORGOT_PASSWORD_REQUEST)
-    return async (variables: ResetPasswordRequestDto) => {
+    const [forgotPasswordRequest] = useMutation<{ data: ResetPasswordRequestData }, { forgotPasswordRequestDto: ForgotPasswordRequestDto }>(FORGOT_PASSWORD_REQUEST)
+    return async (variables: ForgotPasswordRequestDto) => {
         try {
             const { email } = variables
             const { data } = await forgotPasswordRequest({
                 variables: {
-                    resetPasswordRequestDto: { email }
+                    forgotPasswordRequestDto: { email }
                 }
             })
             return { data }
