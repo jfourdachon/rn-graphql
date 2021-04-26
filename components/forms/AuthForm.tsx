@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { Button, StyleSheet, Text, TextInput, View, Switch, Alert, Dimensions } from 'react-native';
-import { useLogin, useSignup } from '../../store/auth/mutations';
+import { useLogin, useSignup, useResetPasswordRequest } from '../../store/auth/mutations';
 import { Colors } from '../../contants/Colors';
 import Touchable from '../atoms/touchable/Touchable';
 
@@ -12,21 +12,19 @@ type SignupValues = {
   username: string;
   password: string;
   isVegetarian: boolean;
-}
+};
 
-
-type LoginValues =  {
+type LoginValues = {
   email: string;
   password: string;
-}
+};
 
 interface FormValuesErrors {
-    email: string;
-    username: string;
-    password: string;
-    isVegetarian: string;
-  }
-  
+  email: string;
+  username: string;
+  password: string;
+  isVegetarian: string;
+}
 
 interface Props {
   isLogin: boolean;
@@ -35,9 +33,12 @@ interface Props {
 const AuthForm = ({ isLogin }: Props) => {
   const [isVegetarian, setIsVegetarian] = useState(false);
   const [errorMail, setErrorMail] = useState('');
+  const [InvalidCrentials, setInvalidCrentials] = useState('');
+  const [forgotPassword, setForgotPassword] = useState(false);
   const toggleSwitch = () => setIsVegetarian((previousState) => !previousState);
   const signup = useSignup();
   const login = useLogin();
+  const resetPasswordRequest = useResetPasswordRequest();
 
   const handleSignUp = async (values: SignupValues) => {
     setErrorMail('');
@@ -53,32 +54,33 @@ const AuthForm = ({ isLogin }: Props) => {
     const { data, error } = await login({ email, password });
     if (error) {
       console.log(error.message);
+      setInvalidCrentials(error.message);
     }
     if (data) {
-        console.log(data)
+      console.log(data);
+    }
+  };
+
+  const handleResetPasswordRequest = async (values: LoginValues) => {
+    const { data } = await resetPasswordRequest({ email: values.email });
+    if (data) {
+      console.log(data);
     }
   };
 
   const handleSubmit = (values: SignupValues) => {
-    if (!isLogin ) {
-        handleSignUp(values)
+    if (!isLogin) {
+      handleSignUp(values);
     } else {
-        handleLogin(values)
+      handleLogin(values);
     }
-  } 
+  };
 
   const authFormSchema = Yup.object().shape({
-    username: Yup.string()
-      .min(3, 'Too Short!')
-      .max(20, 'Too Long!')
-      .required('Required'),
-    password: Yup.string()
-      .min(5, 'Too Short!')
-      .max(20, 'Too Long!')
-      .required('Required'),
+    username: Yup.string().min(3, 'Too Short!').max(20, 'Too Long!').required('Required'),
+    password: Yup.string().min(5, 'Too Short!').max(20, 'Too Long!').required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
   });
-  
 
   const formik = useFormik({
     initialValues: {
@@ -94,7 +96,7 @@ const AuthForm = ({ isLogin }: Props) => {
     },
   });
 
-  return (
+  return !forgotPassword ? (
     <View style={styles.formContainer}>
       <TextInput
         style={styles.input}
@@ -122,6 +124,7 @@ const AuthForm = ({ isLogin }: Props) => {
         value={formik.values.password}
         onBlur={formik.handleBlur('password')}
       />
+
       {formik.touched.password && formik.errors.password ? <Text>{formik.errors.password}</Text> : null}
       {!isLogin && (
         <View style={styles.switchContainer}>
@@ -136,6 +139,34 @@ const AuthForm = ({ isLogin }: Props) => {
         </View>
       )}
       <Touchable onPress={() => handleSubmit(formik.values)}>
+        <View style={styles.btnView}>
+          <Text style={styles.btnText}>Valider</Text>
+        </View>
+      </Touchable>
+      {isLogin && (
+        <Touchable onPress={() => setForgotPassword(true)}>
+          <View style={styles.forgotPwdContainer}>
+            <Text>Forgot password ?</Text>
+          </View>
+        </Touchable>
+      )}
+      {InvalidCrentials ? <Text>{InvalidCrentials}</Text> : null}
+    </View>
+  ) : (
+    <View style={styles.formContainer}>
+      <Touchable onPress={() => setForgotPassword(false)}>
+        <View style={styles.forgotPwdContainer}>
+          <Text>Go back</Text>
+        </View>
+      </Touchable>
+      <TextInput
+        style={styles.input}
+        placeholder='email'
+        onChangeText={formik.handleChange('email')}
+        value={formik.values.email}
+        onBlur={formik.handleBlur('email')}
+      />
+      <Touchable onPress={() => handleResetPasswordRequest(formik.values)}>
         <View style={styles.btnView}>
           <Text style={styles.btnText}>Valider</Text>
         </View>
@@ -195,5 +226,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  forgotPwdContainer: {
+    width: Dimensions.get('window').width / 2,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 20,
   },
 });
