@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import tailwind from 'tailwind-rn';
 import { Button, StyleSheet, Text, TextInput, View, Switch, Alert, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParam } from '../navigation/AuthNavigator';
@@ -21,10 +22,10 @@ const AuthScreen = ({ navigation }: Props) => {
     }
     const switchFormText = isLogin ? 'Pas encore de compte? Inscrit toi' : 'Déjà un compte? Connecte toi'
   return (
-    <ScrollView contentContainerStyle={styles.screen}>
+    <ScrollView contentContainerStyle={[styles.screen, tailwind('bg-blue-100')]}>
       <AuthForm isLogin={isLogin} />
       <Touchable onPress={toggleForm}>
-      <View style={styles.switchFormTextContainer}>
+      <View style={[styles.switchFormTextContainer, tailwind('p-2')]}>
           <Text>
               {switchFormText}
           </Text>
