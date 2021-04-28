@@ -5,8 +5,8 @@ import { Button, StyleSheet, Text, TextInput, View, Switch, Alert, Dimensions } 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParam } from '../navigation/AuthNavigator';
 import { useSignup } from '../store/auth/mutations';
-import Touchable from '../components/atoms/touchable/Touchable';
-import AuthForm from '../components/forms/AuthForm';
+import Touchable from '../components/UI/touchable/Touchable';
+import AuthForm from '../components/template/AuthForm';
 import { ScrollView } from 'react-native-gesture-handler';
 
 type AuthScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Auth'>;
