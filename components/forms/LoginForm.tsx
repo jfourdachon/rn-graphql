@@ -7,15 +7,21 @@ import { useLogin, useResetPasswordRequest } from '../../store/auth/mutations';
 import { Colors } from '../../contants/Colors';
 import Touchable from '../UI/touchable/Touchable';
 import InputText from '../UI/InputText';
+import Toast from '../UI/Toast';
 
-type LoginValues = {
+interface LoginValues {
   email: string;
   password: string;
 };
 
+interface ForgotPasswordRequestValues {
+    email: string
+}
+
 const LoginForm = () => {
   const [InvalidCrentials, setInvalidCrentials] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
+  const [isToastVisible, setIsToastVisible] = useState(false)
   const login = useLogin();
   const resetPasswordRequest = useResetPasswordRequest();
 
@@ -31,7 +37,9 @@ const LoginForm = () => {
     }
   };
 
-  const handleResetPasswordRequest = async (values: LoginValues) => {
+  const handleResetPasswordRequest = async (values: ForgotPasswordRequestValues) => {
+    setIsToastVisible(true)
+
     const { data } = await resetPasswordRequest({ email: values.email });
     if (data) {
       console.log(data);
@@ -42,7 +50,7 @@ const LoginForm = () => {
     handleLogin(values);
   };
 
-  const authFormSchema = Yup.object().shape({
+  const loginFormSchema = Yup.object().shape({
     password: Yup.string().min(5, 'Too Short!').max(20, 'Too Long!').required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
   });
@@ -53,12 +61,30 @@ const LoginForm = () => {
       password: '',
     },
     // validate,
-    validationSchema: authFormSchema,
+    validationSchema: loginFormSchema,
     onSubmit: (values) => {
       handleLogin(values);
     },
   });
 
+  const forgotPasswordSchema = Yup.object().shape({
+    password: Yup.string().min(5, 'Too Short!').max(20, 'Too Long!').required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+  });
+
+
+  const forgotPasswordFormik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    // validate,
+    validationSchema: forgotPasswordSchema,
+    onSubmit: (values) => {
+        handleResetPasswordRequest(values);
+    },
+  });
+
+  console.log(isToastVisible)
   return !forgotPassword ? (
     <>
       <InputText placeholder='email' onChangeText={formik.handleChange('email')} value={formik.values.email} onBlur={formik.handleBlur('email')} />
@@ -86,12 +112,13 @@ const LoginForm = () => {
           <Text>Go back</Text>
         </View>
       </Touchable>
-      <InputText placeholder='email' onChangeText={formik.handleChange('email')} value={formik.values.email} onBlur={formik.handleBlur('email')} />
-      <Touchable onPress={() => handleResetPasswordRequest(formik.values)}>
+      <InputText placeholder='email' onChangeText={forgotPasswordFormik.handleChange('email')} value={forgotPasswordFormik.values.email} onBlur={forgotPasswordFormik.handleBlur('email')} />
+      <Touchable onPress={() => handleResetPasswordRequest(forgotPasswordFormik.values)}>
         <View style={styles.btnView}>
           <Text style={styles.btnText}>Valider</Text>
         </View>
       </Touchable>
+      <Toast isToastVisible={isToastVisible} navigation={setForgotPassword} setIsToastVisible={setIsToastVisible} toastText="Si votre email est enregistré chez nous, vous allez recevoir un email avec la procédure d'oubli de mot de passe" />
     </>
     //TODO forgot password component here
   );

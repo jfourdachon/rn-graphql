@@ -13,7 +13,7 @@ type ResetPasswordValues = {
   confirmPassword: string
 };
 
-const LoginForm = () => {
+const ResetPasswordForm = () => {
   const [InvalidCrentials, setInvalidCrentials] = useState('');
 //   const handleLogin = async (values: LoginValues) => {
 //     const { email, password } = values;
@@ -76,7 +76,7 @@ const LoginForm = () => {
   ) 
 };
 
-export default LoginForm;
+export default ResetPasswordForm;
 
 const styles = StyleSheet.create({
   formContainer: {
