@@ -4,7 +4,7 @@ import ResetPasswordForm from '../components/forms/ResetPasswordForm'
 
 const ResetPasswordScreen = () => {
     return (
-        <View>
+        <View style={styles.screen}>
             <ResetPasswordForm />
         </View>
     )
@@ -12,4 +12,10 @@ const ResetPasswordScreen = () => {
 
 export default ResetPasswordScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    screen: {
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
