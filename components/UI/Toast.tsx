@@ -9,7 +9,6 @@ interface Props {
 }
 
 const Toast = ({ isToastVisible, toastText, setIsToastVisible, navigation }: Props) => {
-    console.log({isToastVisible})
   return (
     <View style={styles.centeredView}>
       <Modal

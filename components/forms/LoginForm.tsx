@@ -84,7 +84,6 @@ const LoginForm = () => {
     },
   });
 
-  console.log(isToastVisible)
   return !forgotPassword ? (
     <>
       <InputText placeholder='email' onChangeText={formik.handleChange('email')} value={formik.values.email} onBlur={formik.handleBlur('email')} />
