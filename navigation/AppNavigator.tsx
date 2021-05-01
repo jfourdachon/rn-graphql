@@ -9,20 +9,12 @@ const prefix = Linking.makeUrl('/');
 const AppNavigator = () => {
   const ref = useRef(null);
 
-  //   const { getInitialState } = useLinking(ref, {
-  //     prefixes: ['https://mychat.com', 'mychat://'],
-  //     config: {
-  //       screens: {
-  //         Chat: 'feed/:sort',
-  //       }
-  //     },
-  //   });
-
   const { getInitialState } = useLinking(ref, {
     prefixes: [prefix],
     config: {
       screens: {
-        ResetPassword: 'resetPassword/:email/:code',
+        ResetPassword: 'resetpassword/:email/:code',
+        NotFound: '*',
       },
     },
   });
