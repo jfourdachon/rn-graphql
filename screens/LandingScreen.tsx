@@ -9,7 +9,7 @@ const LandingScreen = () => {
     <View style={styles.screen}>
       <View style={styles.topPart}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Hygie Pocket</Text>
+          <Text style={styles.title}>Hygie <Text style={styles.titleRightPart}>Pocket</Text></Text>
         </View>
         <View style={styles.animationContainer}>
           <LottieView style={styles.animation} source={require('../assets/lottie/landing.json')} autoPlay loop />
@@ -40,13 +40,23 @@ const styles = StyleSheet.create({
     height: '50%',
     backgroundColor: Colors.light,
   },
-  titleContainer: {},
-  title: {},
+  titleContainer: {
+      marginTop: 40
+  },
+  title: {
+      textAlign: 'center',
+      fontSize: 26,
+      fontFamily: 'fira-bold',
+      color: Colors.accent
+  },
+  titleRightPart: {
+      color: Colors.primary
+  },
   animationContainer: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 50,
+      marginTop: 10,
   },
   animation: {
       width: 200,
