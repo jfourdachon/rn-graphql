@@ -3,6 +3,7 @@ import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { NavigationContainer, NavigationContainerRef, useLinking } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import { AuthNavigator } from './AuthNavigator';
+import { MainNavigator } from './MainNavigator';
 
 const prefix = Linking.makeUrl('/');
 
@@ -13,7 +14,7 @@ const AppNavigator = () => {
     prefixes: [prefix],
     config: {
       screens: {
-        ResetPassword: 'resetpassword/:email/:code',
+        AuthScreen: 'auth',
         NotFound: '*',
       },
     },
@@ -41,6 +42,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer initialState={initialState} ref={ref}>
       <AuthNavigator />
+      {/* <MainNavigator /> */}
     </NavigationContainer>
   );
 };
