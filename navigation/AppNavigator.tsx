@@ -13,7 +13,7 @@ const AppNavigator = () => {
     prefixes: [prefix],
     config: {
       screens: {
-        ResetPassword: 'resetpassword/:email/:code',
+        AuthScreen: 'auth',
         NotFound: '*',
       },
     },

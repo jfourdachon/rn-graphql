@@ -14,7 +14,6 @@ export type AuthStackParam = {
 };
 
 
-const prefix = Linking.makeUrl("/");
 
 
 const AuthStackNavigator = createStackNavigator<AuthStackParam>()
@@ -25,7 +24,6 @@ export const AuthNavigator = () => {
     return (
         <AuthStackNavigator.Navigator>
             <AuthStackNavigator.Screen name="Auth" component={AuthScreen} />
-            <AuthStackNavigator.Screen name="ResetPassword" component={ResetPasswordScreen} />
         </AuthStackNavigator.Navigator>
     )
 }
