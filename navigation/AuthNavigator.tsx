@@ -5,7 +5,7 @@ import AuthScreen from '../screens/AuthScreen';
 import LandingScreen from '../screens/LandingScreen';
 
 export type AuthStackParam = {
-  Auth: undefined;
+  Auth: { shouldLogin?: boolean };
   Landing: undefined;
 };
 

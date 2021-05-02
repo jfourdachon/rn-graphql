@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import tailwind from 'tailwind-rn';
 import { Button, StyleSheet, Text, TextInput, View, Switch, Alert, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { AuthStackParam } from '../navigation/AuthNavigator';
 import { useSignup } from '../store/auth/mutations';
 import Touchable from '../components/UI/touchable/Touchable';
@@ -10,13 +11,19 @@ import AuthForm from '../components/template/AuthForm';
 import { ScrollView } from 'react-native-gesture-handler';
 
 type AuthScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Auth'>;
+type AuthScreenRouteProp = RouteProp<AuthStackParam, 'Auth'>;
 
 type Props = {
   navigation?: AuthScreenNavigationProp;
+  route?: AuthScreenRouteProp 
 };
 
-const AuthScreen = ({ navigation }: Props) => {
+const AuthScreen = ({ navigation, route }: Props) => {
+    useEffect(() => {
+        route?.params.shouldLogin && setIsLogin(true)
+    }, [route])
     const [isLogin, setIsLogin] = useState(false)
+    console.log(route)
     const toggleForm = () => {
         setIsLogin(prevState => !prevState)
     }
