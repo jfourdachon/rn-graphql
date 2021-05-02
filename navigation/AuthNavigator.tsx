@@ -1,30 +1,27 @@
-import React, {RefObject, useRef} from 'react'
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainerRef, useLinking } from '@react-navigation/native';
-import * as Linking from 'expo-linking';
 
 import AuthScreen from '../screens/AuthScreen';
-import HomeScreen from '../screens/HomeScreen';
-import ResetPasswordScreen from '../screens/ResetPasswordScreen';
-
+import LandingScreen from '../screens/LandingScreen';
 
 export type AuthStackParam = {
-    Auth: undefined
-    ResetPassword: undefined
+  Auth: undefined;
+  Landing: undefined;
 };
 
-
-
-
-const AuthStackNavigator = createStackNavigator<AuthStackParam>()
-
+const AuthStackNavigator = createStackNavigator<AuthStackParam>();
 
 export const AuthNavigator = () => {
-
-    return (
-        <AuthStackNavigator.Navigator>
-            <AuthStackNavigator.Screen name="Auth" component={AuthScreen} />
-        </AuthStackNavigator.Navigator>
-    )
-}
-
+  return (
+    <AuthStackNavigator.Navigator>
+      <AuthStackNavigator.Screen
+        name='Landing'
+        component={LandingScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <AuthStackNavigator.Screen name='Auth' component={AuthScreen} />
+    </AuthStackNavigator.Navigator>
+  );
+};

@@ -12,7 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 type AuthScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Auth'>;
 
 type Props = {
-  navigation: AuthScreenNavigationProp;
+  navigation?: AuthScreenNavigationProp;
 };
 
 const AuthScreen = ({ navigation }: Props) => {

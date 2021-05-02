@@ -5,14 +5,16 @@ import { AppRegistry } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import AppNavigator from './navigation/AppNavigator';
 import client from './store/initApolloClient';
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 enableScreens();
 
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <AppNavigator />
+      <SafeAreaProvider>
+        <AppNavigator />
+      </SafeAreaProvider>
     </ApolloProvider>
   );
 }
