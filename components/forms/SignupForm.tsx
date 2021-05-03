@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { StyleSheet, Text, View, Switch } from 'react-native';
-import { useSignup, useResetPasswordRequest } from '../../store/auth/mutations';
+import { useSignup } from '../../store/auth/mutations';
 import Touchable from '../UI/touchable/Touchable';
 import InputText from '../UI/InputText';
 import { Colors } from '../../contants/Colors';
@@ -21,7 +21,6 @@ const SignupForm = () => {
   const [errorMail, setErrorMail] = useState('');
   const toggleSwitch = () => setIsVegetarian((previousState) => !previousState);
   const signup = useSignup();
-  const resetPasswordRequest = useResetPasswordRequest();
 
   const handleSignUp = async (values: SignupValues) => {
     setErrorMail('');
