@@ -2,21 +2,46 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Touchable from '../UI/touchable/Touchable';
+import { Colors } from '../../contants/Colors';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const slideList = [
-  { step: 0, title: "Allez c'est parti", subtitle: 'Commence par renseigner les élements suivants' },
-  { step: 1, title: 'Intéréssant^^', subtitle: 'Quels sont tes objectif' },
+  { step: 0, title: "Allez c'est parti" },
+  { step: 1, title: 'Quels sont tes objectifs' },
   {
     step: 2,
-    title: "Si c'est ce que tu veux, alors nous le voulons aussi pour toi!",
-    subtitle: 'Maintenant passons à tes habitudes alimentaires',
+    title: 'Tes habitudes alimentaires.',
   },
-  { step: 3, title: "J'étais sur que tu dirais ca", subtitle: 'Okay, Récapitulons' },
+  { step: 3, title: 'Okay, Récapitulons' },
   { step: 4, title: 'Inscription' },
 ];
 
+enum OBJECTIVES {
+  UP = 'Prendre du poids',
+  DOWN = 'Perder du poids',
+  NULL = "Pas d'objectif",
+}
+
+const Objectives = () => {
+  const [objective, setObjective] = useState<OBJECTIVES>(OBJECTIVES.NULL);
+  const weigthObj: OBJECTIVES[] = [OBJECTIVES.DOWN, OBJECTIVES.UP, OBJECTIVES.NULL];
+
+  return (
+    <View style={styles.objectiveContainer}>
+      {weigthObj.map((object) => (
+        <View style={styles.test}>
+          <Touchable onPress={() => setObjective(object)}>
+            <View style={objective !== object ?  styles.objectiveBtn : styles.selectedBtn}>
+              <Text style={objective !== object ?  styles.objectiveText : styles.selectedText}>{object}</Text>
+            </View>
+          </Touchable>
+        </View>
+      ))}
+    </View>
+  );
+};
 interface Props {
   data: { step: number; title: string; subtitle: string };
 }
@@ -34,14 +59,16 @@ function Slide({ data }: Props) {
   return (
     <View
       style={{
-        height: '70%',
+        height: '100%',
         width: windowWidth,
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <Text style={{ fontSize: 24 }}>{data.title}</Text>
-      <Text style={{ fontSize: 18 }}>{data.subtitle}</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>{data.title}</Text>
+      </View>
+      {data.step === 0 && <Objectives />}
     </View>
   );
 }
@@ -58,11 +85,11 @@ const SignupFlow = () => {
     setStepIndex(stepIndex + 1);
   };
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <FlatList
         ref={(ref) => (listRef.current = ref)}
         data={slideList}
-        style={{ height: '50%' }}
+        style={{ height: '90%' }}
         keyExtractor={(item) => item.step}
         renderItem={({ item }) => {
           return <Slide data={item} />;
@@ -77,18 +104,56 @@ const SignupFlow = () => {
         decelerationRate={0}
       />
 
-      <View style={{height: '10%'}}>
-        {/* <TouchableOpacity onPress={this.previousStep}>
-          <Text>Prev Step</Text>
-        </TouchableOpacity> */}
+      <View style={{ height: '10%' }}>
         <TouchableOpacity onPress={nextStep}>
           <Text> {stepIndex < slideList.length - 1 ? 'Next Step' : 'Submit'}</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default SignupFlow;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textContainer: {
+    height: '30%',
+    paddingHorizontal: 25,
+  },
+  title: {
+    fontSize: 22,
+    fontFamily: 'fira-medium',
+    color: Colors.lightGrey,
+  },
+  objectiveContainer: {
+    height: '35%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  test: { borderRadius: 20, overflow: 'hidden', borderWidth: 1, borderColor: 'black', backgroundColor: 'white' },
+  objectiveBtn: {
+    minWidth: 240,
+    width: '100%',
+  },
+  selectedBtn: {
+    minWidth: 240,
+    width: '100%',
+    backgroundColor: 'gray'
+  },
+  objectiveText: {
+    fontSize: 18,
+    paddingVertical: 10,
+    textAlign: 'center',
+    fontFamily: 'fira-medium',
+    color: Colors.primaryLight,
+  },
+  selectedText : {
+    fontSize: 18,
+    paddingVertical: 10,
+    textAlign: 'center',
+    fontFamily: 'fira-medium',
+    color: Colors.light,
+  }
+});

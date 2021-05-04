@@ -30,18 +30,18 @@ export default AuthForm;
 const styles = StyleSheet.create({
   formContainer: {
     backgroundColor: Colors.primary,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    // borderRadius: 8,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    // elevation: 5,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 30,
+    // padding: 30,
   }
 });
