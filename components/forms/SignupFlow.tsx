@@ -34,7 +34,7 @@ function Slide({ data }: Props) {
   return (
     <View
       style={{
-        height: windowHeight,
+        height: '70%',
         width: windowWidth,
         justifyContent: 'center',
         alignItems: 'center',
@@ -54,15 +54,15 @@ const SignupFlow = () => {
   const nextStep = () => {
     console.log('next tapped...');
     setCurrentStepIndex(stepIndex + 1);
-    listRef.current.scrollToIndex({ index: currentStepIndex, animated: true });
-    setStepIndex(currentStepIndex);
+    listRef.current.scrollToIndex({ index: currentStepIndex + 1, animated: true });
+    setStepIndex(stepIndex + 1);
   };
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <FlatList
         ref={(ref) => (listRef.current = ref)}
         data={slideList}
-        style={{ flex: 1 }}
+        style={{ height: '50%' }}
         keyExtractor={(item) => item.step}
         renderItem={({ item }) => {
           return <Slide data={item} />;
@@ -77,7 +77,7 @@ const SignupFlow = () => {
         decelerationRate={0}
       />
 
-      <View>
+      <View style={{height: '10%'}}>
         {/* <TouchableOpacity onPress={this.previousStep}>
           <Text>Prev Step</Text>
         </TouchableOpacity> */}

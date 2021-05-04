@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../contants/Colors';
 import LoginForm from '../forms/LoginForm';
+import SignupFlow from '../forms/SignupFlow';
 import SignupForm from '../forms/SignupForm';
 
 
@@ -14,7 +15,8 @@ const AuthForm = ({ isLogin }: Props) => {
 
   return !isLogin ? (
     <View style={styles.formContainer}>
-      <SignupForm />
+      {/* <SignupForm /> */}
+      <SignupFlow />
     </View>
   ) : (
     <View style={styles.formContainer}>
