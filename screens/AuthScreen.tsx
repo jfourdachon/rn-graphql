@@ -29,15 +29,15 @@ const AuthScreen = ({ navigation, route }: Props) => {
     }
     const switchFormText = isLogin ? 'Pas encore de compte? Inscrit toi' : 'Déjà un compte? Connecte toi'
   return (
-    <ScrollView contentContainerStyle={[styles.screen, tailwind('bg-blue-100')]}>
+    <ScrollView contentContainerStyle={styles.screen}>
       <AuthForm isLogin={isLogin} />
-      <Touchable onPress={toggleForm}>
+      {/* <Touchable onPress={toggleForm}>
       <View style={[styles.switchFormTextContainer, tailwind('p-2')]}>
           <Text>
               {switchFormText}
           </Text>
       </View>
-      </Touchable>
+      </Touchable> */}
     </ScrollView>
   );
 };
