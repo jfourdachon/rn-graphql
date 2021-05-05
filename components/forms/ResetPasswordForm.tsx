@@ -59,10 +59,10 @@ const ResetPasswordForm = () => {
 
   return (
     <>
-      <InputText placeholder='password' onChangeText={formik.handleChange('password')} value={formik.values.password} onBlur={formik.handleBlur('password')} />
+      <InputText style={styles.input} placeholder='password' onChangeText={formik.handleChange('password')} value={formik.values.password} onBlur={formik.handleBlur('password')} />
 
       {formik.touched.password && formik.errors.password ? <Text>{formik.errors.password}</Text> : null}
-      <InputText placeholder='confirm password' onChangeText={formik.handleChange('confirmPassword')} value={formik.values.confirmPassword} onBlur={formik.handleBlur('confirmPassword')} />
+      <InputText style={styles.input} placeholder='confirm password' onChangeText={formik.handleChange('confirmPassword')} value={formik.values.confirmPassword} onBlur={formik.handleBlur('confirmPassword')} />
 
       {formik.touched.confirmPassword && formik.errors.confirmPassword ? <Text>{formik.errors.confirmPassword}</Text> : null}
       <Touchable onPress={() => handleSubmit(formik.values)}>
@@ -116,4 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginTop: 20,
   },
+  input: {
+    width: Dimensions.get('window').width / 2,
+  }
 });
