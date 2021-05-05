@@ -86,10 +86,10 @@ const LoginForm = () => {
 
   return !forgotPassword ? (
     <>
-      <InputText placeholder='email' onChangeText={formik.handleChange('email')} value={formik.values.email} onBlur={formik.handleBlur('email')} />
+      <InputText style={styles.input} placeholder='email' onChangeText={formik.handleChange('email')} value={formik.values.email} onBlur={formik.handleBlur('email')} />
 
       {formik.touched.email && formik.errors.email ? <Text>{formik.errors.email}</Text> : null}
-      <InputText placeholder='password' onChangeText={formik.handleChange('password')} value={formik.values.password} onBlur={formik.handleBlur('password')} />
+      <InputText style={styles.input} placeholder='password' onChangeText={formik.handleChange('password')} value={formik.values.password} onBlur={formik.handleBlur('password')} />
 
       {formik.touched.password && formik.errors.password ? <Text>{formik.errors.password}</Text> : null}
       <Touchable onPress={() => handleSubmit(formik.values)}>
@@ -111,7 +111,7 @@ const LoginForm = () => {
           <Text>Go back</Text>
         </View>
       </Touchable>
-      <InputText placeholder='email' onChangeText={forgotPasswordFormik.handleChange('email')} value={forgotPasswordFormik.values.email} onBlur={forgotPasswordFormik.handleBlur('email')} />
+      <InputText style={styles.input} placeholder='email' onChangeText={forgotPasswordFormik.handleChange('email')} value={forgotPasswordFormik.values.email} onBlur={forgotPasswordFormik.handleBlur('email')} />
       <Touchable onPress={() => handleResetPasswordRequest(forgotPasswordFormik.values)}>
         <View style={styles.btnView}>
           <Text style={styles.btnText}>Valider</Text>
@@ -163,4 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginTop: 20,
   },
+  input: {
+    width: Dimensions.get('window').width / 2,
+  }
 });

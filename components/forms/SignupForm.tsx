@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { StyleSheet, Text, View, Switch } from 'react-native';
+import { StyleSheet, Text, View, Switch, Dimensions } from 'react-native';
 import { useSignup } from '../../store/auth/mutations';
 import Touchable from '../UI/touchable/Touchable';
 import InputText from '../UI/InputText';
@@ -15,7 +15,6 @@ type SignupValues = {
   isVegetarian: boolean;
 };
 
-
 const SignupForm = () => {
   const [isVegetarian, setIsVegetarian] = useState(false);
   const [errorMail, setErrorMail] = useState('');
@@ -27,7 +26,8 @@ const SignupForm = () => {
     const { email, password, username } = values;
     const { error } = await signup({ email, password, username, isVegetarian });
     if (error) {
-      if (error.message === 'Email is already in use') setErrorMail(error.message);
+      if (error.message === 'Email is already in use')
+        setErrorMail(error.message);
     }
   };
 
@@ -36,8 +36,14 @@ const SignupForm = () => {
   };
 
   const authFormSchema = Yup.object().shape({
-    username: Yup.string().min(3, 'Too Short!').max(20, 'Too Long!').required('Required'),
-    password: Yup.string().min(5, 'Too Short!').max(20, 'Too Long!').required('Required'),
+    username: Yup.string()
+      .min(3, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required'),
+    password: Yup.string()
+      .min(5, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
   });
 
@@ -58,28 +64,37 @@ const SignupForm = () => {
   return (
     <>
       <InputText
+        style={styles.input}
         placeholder='email'
         onChangeText={formik.handleChange('email')}
         value={formik.values.email}
         onBlur={formik.handleBlur('email')}
       />
 
-      {formik.touched.email && formik.errors.email ? <Text>{formik.errors.email}</Text> : null}
+      {formik.touched.email && formik.errors.email ? (
+        <Text>{formik.errors.email}</Text>
+      ) : null}
       {errorMail ? <Text>{errorMail}</Text> : null}
       <InputText
+        style={styles.input}
         placeholder='username'
         onChangeText={formik.handleChange('username')}
         value={formik.values.username}
         onBlur={formik.handleBlur('username')}
       />
-      {formik.touched.username && formik.errors.username ? <Text>{formik.errors.username}</Text> : null}
+      {formik.touched.username && formik.errors.username ? (
+        <Text>{formik.errors.username}</Text>
+      ) : null}
       <InputText
+        style={styles.input}
         placeholder='password'
         onChangeText={formik.handleChange('password')}
         value={formik.values.password}
         onBlur={formik.handleBlur('password')}
       />
-      {formik.touched.password && formik.errors.password ? <Text>{formik.errors.password}</Text> : null}
+      {formik.touched.password && formik.errors.password ? (
+        <Text>{formik.errors.password}</Text>
+      ) : null}
       <View style={styles.switchContainer}>
         <Text style={styles.switchText}>Are you vegetarian?</Text>
         <Switch
@@ -127,5 +142,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  input: {
+    width: Dimensions.get('window').width / 2,
   },
 });

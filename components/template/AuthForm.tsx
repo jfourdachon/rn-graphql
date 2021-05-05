@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../contants/Colors';
 import LoginForm from '../forms/LoginForm';
-import SignupFlow from '../forms/SignupFlow';
+import SignupFlow from '../forms/signupFlow';
 import SignupForm from '../forms/SignupForm';
 
 
