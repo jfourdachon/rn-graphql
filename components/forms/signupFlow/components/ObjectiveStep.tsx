@@ -1,42 +1,41 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { Dispatch, SetStateAction } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { OBJECTIVES, SignUpInfos } from '../index';
 import { Colors } from '../../../../contants/Colors';
 import Touchable from '../../../UI/touchable/Touchable';
 
-enum OBJECTIVES {
-  UP = 'Prendre du poids',
-  DOWN = 'Perder du poids',
-  NULL = "Pas d'objectif",
+
+
+interface Props {
+    setSignupInfos: Dispatch<SetStateAction<SignUpInfos>>
+    signupInfos: SignUpInfos
 }
 
-const ObjectiveStep = () => {
-  const [objective, setObjective] = useState<OBJECTIVES | null>(null);
-  const weigthObj: OBJECTIVES[] = [
+const ObjectiveStep = ({setSignupInfos, signupInfos}: Props) => {
+  const weigthObjectives: OBJECTIVES[] = [
     OBJECTIVES.DOWN,
     OBJECTIVES.UP,
-    OBJECTIVES.NULL,
+    OBJECTIVES.HEALTH_FOOD,
   ];
 
   return (
     <View style={styles.objectiveContainer}>
-      {weigthObj.map((object, key) => (
+      {weigthObjectives.map((objective, key) => (
         <View style={styles.btnWrapper} key={key}>
-          <Touchable onPress={() => setObjective(object)}>
+          <Touchable onPress={() => setSignupInfos(prevState => ({...prevState, objective: objective}))}>
             <View
               style={
-                objective !== object ? styles.objectiveBtn : styles.selectedBtn
+                signupInfos.objective !== objective ? styles.objectiveBtn : styles.selectedBtn
               }
             >
               <Text
                 style={
-                  objective !== object
+                    signupInfos.objective !== objective
                     ? styles.objectiveText
                     : styles.selectedText
                 }
               >
-                {object}
+                {objective}
               </Text>
             </View>
           </Touchable>
@@ -59,18 +58,18 @@ const styles = StyleSheet.create({
   btnWrapper: {
     borderRadius: 20,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'black',
+    borderWidth: 2,
+    borderColor: Colors.lightGrey,
     backgroundColor: 'white',
   },
   objectiveBtn: {
-    minWidth: 240,
+    minWidth: 280,
     width: '100%',
   },
   selectedBtn: {
-    minWidth: 240,
+    minWidth: 280,
     width: '100%',
-    backgroundColor: 'gray',
+    backgroundColor: Colors.primaryDark,
   },
   objectiveText: {
     fontSize: 18,
