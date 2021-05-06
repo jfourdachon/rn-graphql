@@ -17,7 +17,7 @@ interface Props {
   signupInfos: SignUpInfos;
 }
 
-const CurrentStep = ({ signupInfos, setSignupInfos }: Props) => {
+const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
   const setHeight = (e: string) => {
     setSignupInfos((prevState) => ({
       ...prevState,
@@ -66,7 +66,7 @@ const CurrentStep = ({ signupInfos, setSignupInfos }: Props) => {
   );
 };
 
-export default CurrentStep;
+export default CurrentHeight;
 
 const styles = StyleSheet.create({
   mainRow: {

@@ -4,26 +4,24 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { Colors } from '../../../contants/Colors';
 import Slide from './components/Slide';
 
-
 export enum OBJECTIVES {
   UP = 'Prendre du poids',
   DOWN = 'Perder du poids',
-  HEALTH_FOOD = "Améliorer mon alimentation",
+  HEALTH_FOOD = 'Améliorer mon alimentation',
 }
 
 export enum DIET {
-    VEGETARIAN = 'Végétarien',
-    VEGAN = 'Végan',
-    FLEX = 'Flexitarien',
-    OTHER = 'Autre'
+  VEGETARIAN = 'Végétarien',
+  VEGAN = 'Végan',
+  FLEX = 'Flexitarien',
+  OTHER = 'Autre',
 }
 
-
 export interface SignUpInfos {
-    objective: OBJECTIVES | null
-    height: number | ""
-    weight: number | ""
-    diet: keyof DIET | null
+  objective: OBJECTIVES | null;
+  height: number | '';
+  weight: number | '';
+  diet: DIET | null;
 }
 
 const slideList = [
@@ -40,39 +38,41 @@ const slideList = [
   { title: 'Inscription' },
 ];
 
-
-
 const SignupFlow = () => {
   const listRef = useRef<any>();
   const [stepIndex, setStepIndex] = useState(0);
-  const [signupInfos, setSignupInfos] = useState<SignUpInfos>({objective: null, height: "", weight: "", diet: null})
+  const [signupInfos, setSignupInfos] = useState<SignUpInfos>({
+    objective: null,
+    height: '',
+    weight: '',
+    diet: null,
+  });
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const nextStep = () => {
-      const goNext = () => {
-        setCurrentStepIndex(stepIndex + 1);
-        listRef.current.scrollToIndex({
-          index: currentStepIndex + 1,
-          animated: true,
-        });
-        setStepIndex(stepIndex + 1);
-      }
-    switch(stepIndex) {
-        case(0):
-            if(signupInfos.objective) {
-                goNext()
-            }
-            break
-        case(1):
-            if (signupInfos.weight && signupInfos.height) {
-                goNext()
-            }
-        case(2):
-            if (signupInfos.diet) {
-                goNext()
-            }
+    const goNext = () => {
+      setCurrentStepIndex(stepIndex + 1);
+      listRef.current.scrollToIndex({
+        index: currentStepIndex + 1,
+        animated: true,
+      });
+      setStepIndex(stepIndex + 1);
+    };
+    switch (stepIndex) {
+      case 0:
+        if (signupInfos.objective) {
+          goNext();
+        }
+        break;
+      case 1:
+        if (signupInfos.weight && signupInfos.height) {
+          goNext();
+        }
+      case 2:
+        if (signupInfos.diet) {
+          goNext();
+        }
     }
-   
   };
   return (
     <View style={{ flex: 1 }}>
@@ -82,7 +82,14 @@ const SignupFlow = () => {
         style={{ height: '90%' }}
         keyExtractor={(_, key) => key.toString()}
         renderItem={({ item }) => {
-          return <Slide data={item} index={stepIndex} setSignupInfos={setSignupInfos} signupInfos={signupInfos} />;
+          return (
+            <Slide
+              data={item}
+              index={stepIndex}
+              setSignupInfos={setSignupInfos}
+              signupInfos={signupInfos}
+            />
+          );
         }}
         scrollEnabled={false}
         initialNumToRender={1}

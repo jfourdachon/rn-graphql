@@ -3,7 +3,8 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { Colors } from '../../../../contants/Colors';
 import ObjectiveStep from './ObjectiveStep';
 import {SignUpInfos} from '../index'
-import CurrentStep from './CurrentStep';
+import CurrentHeight from './CurrentHeight';
+import CurrentDiet from './CurrentDiet';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -22,7 +23,8 @@ const Slide = ({ data, index, setSignupInfos, signupInfos }: Props) => {
         <Text style={styles.title}>{data.subtitle}</Text>
       </View>
       {index === 0 && <ObjectiveStep setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
-      {index === 1 && <CurrentStep setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
+      {index === 1 && <CurrentHeight setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
+      {index === 2 && <CurrentDiet setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
     </View>
   );
 };
