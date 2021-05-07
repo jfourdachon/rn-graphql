@@ -7,7 +7,10 @@ import Touchable from '../components/UI/touchable/Touchable';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParam } from '../navigation/AuthNavigator';
 
-type LandingScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Landing'>;
+type LandingScreenNavigationProp = StackNavigationProp<
+  AuthStackParam,
+  'Landing'
+>;
 
 type Props = {
   navigation: LandingScreenNavigationProp;
@@ -23,21 +26,39 @@ const LandingScreen = ({ navigation }: Props) => {
           </Text>
         </View>
         <View style={styles.animationContainer}>
-          <LottieView style={styles.animation} source={require('../assets/lottie/landing.json')} autoPlay loop />
+          <LottieView
+            style={styles.animation}
+            source={require('../assets/lottie/landing.json')}
+            autoPlay
+            loop
+          />
         </View>
       </View>
       <View style={styles.bottomPart}>
-        <SvgComponent width='100%' height='100%' style={styles.imageContainer} />
+        <SvgComponent
+          width='100%'
+          height='100%'
+          style={styles.imageContainer}
+        />
         <View style={styles.welcomeContainer}>
           <Text style={styles.welcomeTitle}>Bienvenue chez les ****</Text>
-          <Text style={styles.welcomeText}>Que ton aliment soit ton premier remède. (Hippocrate)</Text>
+          <Text style={styles.welcomeText}>
+            Que ton aliment soit ton premier remède. (Hippocrate)
+          </Text>
         </View>
         <View style={styles.authContainer}>
-          <Touchable onPress={() => navigation.navigate('Auth', { shouldLogin: false })} style={styles.touchable}>
-            <View style={styles.btn}>
-              <Text style={styles.btnText}>Rejoins nous!</Text>
-            </View>
-          </Touchable>
+          <View style={styles.btnContainer}>
+            <Touchable
+              onPress={() =>
+                navigation.navigate('Auth', { shouldLogin: false })
+              }
+              style={styles.touchable}
+            >
+              <View style={styles.btn}>
+                <Text style={styles.btnText}>Rejoins nous!</Text>
+              </View>
+            </Touchable>
+          </View>
           <View style={styles.shouldLoginContainer}>
             <Text style={styles.shouldLoginText}>Tu es déja inscrit ? </Text>
             <Touchable
@@ -127,22 +148,25 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+  },
+  btnContainer: {
+    width: 280,
+    maxWidth: 350,
+    backgroundColor: Colors.light,
+    borderRadius: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
   touchable: {
     display: 'flex',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   btn: {
     width: '100%',
-    height: 50,
-    maxWidth: 350,
-    backgroundColor: Colors.light,
     paddingVertical: 10,
-    borderRadius: 20,
-    display: 'flex',
-    justifyContent: 'center',
   },
   btnText: {
     textAlign: 'center',

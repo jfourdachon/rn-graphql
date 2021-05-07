@@ -4,18 +4,16 @@ import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../contants/Colors';
 import LoginForm from '../forms/LoginForm';
 import SignupFlow from '../forms/signupFlow';
-import SignupForm from '../forms/SignupForm';
-
+import { AuthScreenNavigationProp } from '../../screens/AuthScreen';
 
 interface Props {
   isLogin: boolean;
+  navigation?: AuthScreenNavigationProp;
 }
 
-const AuthForm = ({ isLogin }: Props) => {
-
+const AuthForm = ({ isLogin, navigation }: Props) => {
   return !isLogin ? (
     <View style={styles.formContainer}>
-      {/* <SignupForm /> */}
       <SignupFlow />
     </View>
   ) : (
@@ -29,19 +27,9 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   formContainer: {
-    backgroundColor: Colors.primary,
-    // borderRadius: 8,
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 5,
     display: 'flex',
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    // padding: 30,
-  }
+  },
 });

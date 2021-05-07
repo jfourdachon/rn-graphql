@@ -12,7 +12,8 @@ type SignupValues = {
   email: string;
   username: string;
   password: string;
-  isVegetarian: boolean;
+  confirmPassword: string;
+  //   isVegetarian: boolean;
 };
 
 const SignupForm = () => {
@@ -44,6 +45,10 @@ const SignupForm = () => {
       .min(5, 'Too Short!')
       .max(20, 'Too Long!')
       .required('Required'),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref('password'), null],
+      'Passwords must match'
+    ),
     email: Yup.string().email('Invalid email').required('Required'),
   });
 
@@ -52,7 +57,8 @@ const SignupForm = () => {
       email: '',
       username: '',
       password: '',
-      isVegetarian: false,
+      confirmPassword: '',
+      //   isVegetarian: false,
     },
     // validate,
     validationSchema: authFormSchema,
@@ -62,7 +68,7 @@ const SignupForm = () => {
   });
 
   return (
-    <>
+    <View>
       <InputText
         style={styles.input}
         placeholder='email'
@@ -86,6 +92,7 @@ const SignupForm = () => {
         <Text>{formik.errors.username}</Text>
       ) : null}
       <InputText
+        secureTextEntry
         style={styles.input}
         placeholder='password'
         onChangeText={formik.handleChange('password')}
@@ -95,7 +102,18 @@ const SignupForm = () => {
       {formik.touched.password && formik.errors.password ? (
         <Text>{formik.errors.password}</Text>
       ) : null}
-      <View style={styles.switchContainer}>
+      <InputText
+        style={styles.input}
+        secureTextEntry
+        placeholder='confirm password'
+        onChangeText={formik.handleChange('confirmPassword')}
+        value={formik.values.confirmPassword}
+        onBlur={formik.handleBlur('confirmPassword')}
+      />
+      {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+        <Text>{formik.errors.confirmPassword}</Text>
+      ) : null}
+      {/* <View style={styles.switchContainer}>
         <Text style={styles.switchText}>Are you vegetarian?</Text>
         <Switch
           trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -104,13 +122,13 @@ const SignupForm = () => {
           onValueChange={toggleSwitch}
           value={isVegetarian}
         />
-      </View>
+      </View> */}
       <Touchable onPress={() => handleSubmit(formik.values)}>
         <View style={styles.btnView}>
           <Text style={styles.btnText}>Valider</Text>
         </View>
       </Touchable>
-    </>
+    </View>
   );
 };
 
@@ -130,20 +148,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   btnView: {
-    minWidth: 180,
-    width: '70%',
     paddingVertical: 5,
-    marginTop: 15,
-    backgroundColor: Colors.accent,
+    marginTop: 35,
+    backgroundColor: Colors.lightGrey,
     borderRadius: 10,
   },
   btnText: {
     fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold',
+    color: Colors.primaryDark,
+    fontFamily: 'fira-medium',
     textAlign: 'center',
   },
   input: {
     width: Dimensions.get('window').width / 2,
+    borderRadius: 6
   },
 });

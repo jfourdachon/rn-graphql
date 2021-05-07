@@ -1,15 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import {
-    Dimensions,
-  NativeSyntheticEvent,
-  StyleSheet,
-  Text,
-  TextInputChangeEventData,
-  View,
-} from 'react-native';
+import React, { Dispatch, SetStateAction, useMemo } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import { SignUpInfos } from '..';
 import { Colors } from '../../../../contants/Colors';
 import { KeyboardType } from '../../../../typescript/enums/form';
+import DropDown from '../../../UI/DropDown';
 import InputText from '../../../UI/InputText';
 
 interface Props {
@@ -17,7 +12,20 @@ interface Props {
   signupInfos: SignUpInfos;
 }
 
+function range(start: number, end: number) {
+  return Array(end - start + 1)
+    .fill(null)
+    .map((_, idx) => {
+      return { label: start + idx, value: start + idx };
+    });
+}
+
 const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
+  const createHeightSelect = useMemo(() => range(120, 220), []);
+  const createWeightSelect = useMemo(() => range(35, 180), []);
+
+  console.log({ createHeightSelect });
+
   const setHeight = (e: string) => {
     setSignupInfos((prevState) => ({
       ...prevState,
@@ -37,12 +45,8 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
         <View style={styles.colTitleContainer}>
           <Text>Ta taille actuelle</Text>
           <View style={styles.inputRow}>
-            <InputText
-              placeholder='ex: 165...'
-              keyboardType={KeyboardType.NumberPad}
-              value={signupInfos.height.toString()}
-              onChangeText={(e) => setHeight(e)}
-            />
+            <DropDown />
+           
             <Text>cm</Text>
           </View>
         </View>
@@ -58,7 +62,7 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
               //TODO create method to handle weight
               onChangeText={setWeight}
             />
-             <Text>Kg</Text>
+            <Text>Kg</Text>
           </View>
         </View>
       </View>
@@ -91,9 +95,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {},
   inputRow: {
-      width: '30%',
-      display: 'flex',
-      flexDirection: 'row'
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   input: {
     width: Dimensions.get('window').width / 4,

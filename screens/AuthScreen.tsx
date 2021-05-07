@@ -10,7 +10,7 @@ import Touchable from '../components/UI/touchable/Touchable';
 import AuthForm from '../components/template/AuthForm';
 import { ScrollView } from 'react-native-gesture-handler';
 
-type AuthScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Auth'>;
+export type AuthScreenNavigationProp = StackNavigationProp<AuthStackParam, 'Auth'>;
 type AuthScreenRouteProp = RouteProp<AuthStackParam, 'Auth'>;
 
 type Props = {
@@ -30,7 +30,7 @@ const AuthScreen = ({ navigation, route }: Props) => {
     const switchFormText = isLogin ? 'Pas encore de compte? Inscrit toi' : 'Déjà un compte? Connecte toi'
   return (
     <ScrollView contentContainerStyle={styles.screen}>
-      <AuthForm isLogin={isLogin} />
+      <AuthForm isLogin={isLogin} navigation={navigation} />
       {/* <Touchable onPress={toggleForm}>
       <View style={[styles.switchFormTextContainer, tailwind('p-2')]}>
           <Text>

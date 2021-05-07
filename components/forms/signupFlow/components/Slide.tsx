@@ -5,8 +5,8 @@ import ObjectiveStep from './ObjectiveStep';
 import {SignUpInfos} from '../index'
 import CurrentHeight from './CurrentHeight';
 import CurrentDiet from './CurrentDiet';
-
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+import Recap from './Recap';
+import { WindowWidth } from '../../../../contants/window';
 
 interface Props {
   data: { title: string; subtitle: string };
@@ -25,6 +25,7 @@ const Slide = ({ data, index, setSignupInfos, signupInfos }: Props) => {
       {index === 0 && <ObjectiveStep setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
       {index === 1 && <CurrentHeight setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
       {index === 2 && <CurrentDiet setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
+      {index === 3 && <Recap  signupInfos={signupInfos} />}
     </View>
   );
 };
@@ -34,7 +35,7 @@ export default Slide;
 const styles = StyleSheet.create({
   slide: {
     height: '100%',
-    width: windowWidth,
+    width: WindowWidth,
     paddingTop: 80,
   },
   titleContainer: {
