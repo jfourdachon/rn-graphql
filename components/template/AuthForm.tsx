@@ -27,7 +27,7 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   formContainer: {
-    flex: 1,
+    display: 'flex',
     backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',

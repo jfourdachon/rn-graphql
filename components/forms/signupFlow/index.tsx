@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { Colors } from '../../../contants/Colors';
+import { WindowHeight, WindowWidth } from '../../../contants/window';
 import SignupForm from '../SignupForm';
 import Slide from './components/Slide';
 
@@ -86,7 +87,7 @@ const SignupFlow = () => {
     }
   };
 
-  const modify = () => {
+  const backToFirstStep = () => {
     listRef.current.scrollToIndex({
       index: 0,
       animated: false,
@@ -128,7 +129,7 @@ const SignupFlow = () => {
         ]}
       >
         {currentStepIndex === 3 && (
-          <TouchableOpacity onPress={modify}>
+          <TouchableOpacity onPress={backToFirstStep}>
             <Text style={styles.btnText}>Modifier</Text>
           </TouchableOpacity>
         )}
@@ -167,7 +168,11 @@ const styles = StyleSheet.create({
     color: Colors.light,
   },
   signupContainer: {
+    height: WindowHeight,
+    width: WindowWidth,
     backgroundColor: Colors.primary,
-    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -6,8 +6,7 @@ import {SignUpInfos} from '../index'
 import CurrentHeight from './CurrentHeight';
 import CurrentDiet from './CurrentDiet';
 import Recap from './Recap';
-
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+import { WindowWidth } from '../../../../contants/window';
 
 interface Props {
   data: { title: string; subtitle: string };
@@ -36,7 +35,7 @@ export default Slide;
 const styles = StyleSheet.create({
   slide: {
     height: '100%',
-    width: windowWidth,
+    width: WindowWidth,
     paddingTop: 80,
   },
   titleContainer: {

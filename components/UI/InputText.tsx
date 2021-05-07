@@ -2,18 +2,21 @@ import React from 'react'
 import { Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardType } from '../../typescript/enums/form'
 
+
 interface Props {
     style?: {}
     placeholder: string
     onChangeText: (e: any) => void
     value: string
     onBlur?: (e: any) => void
-    keyboardType?: KeyboardType
+    keyboardType?: KeyboardType,
+    secureTextEntry?: boolean
 }
 
-const InputText = ({style, placeholder, onChangeText, onBlur, value, keyboardType}: Props) => {
+const InputText = ({style, placeholder, onChangeText, onBlur, value, keyboardType, secureTextEntry}: Props) => {
     return (
        <TextInput style={[styles.input, style]}
+       secureTextEntry={secureTextEntry}
        placeholder={placeholder}
        onChangeText={onChangeText}
        value={value}

@@ -8,20 +8,21 @@ import { Colors } from '../../contants/Colors';
 import Touchable from '../UI/touchable/Touchable';
 import InputText from '../UI/InputText';
 import Toast from '../UI/Toast';
+import { WindowHeight, WindowWidth } from '../../contants/window';
 
 interface LoginValues {
   email: string;
   password: string;
-};
+}
 
 interface ForgotPasswordRequestValues {
-    email: string
+  email: string;
 }
 
 const LoginForm = () => {
   const [InvalidCrentials, setInvalidCrentials] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [isToastVisible, setIsToastVisible] = useState(false)
+  const [isToastVisible, setIsToastVisible] = useState(false);
   const login = useLogin();
   const resetPasswordRequest = useResetPasswordRequest();
 
@@ -37,8 +38,10 @@ const LoginForm = () => {
     }
   };
 
-  const handleResetPasswordRequest = async (values: ForgotPasswordRequestValues) => {
-    setIsToastVisible(true)
+  const handleResetPasswordRequest = async (
+    values: ForgotPasswordRequestValues
+  ) => {
+    setIsToastVisible(true);
 
     const { data } = await resetPasswordRequest({ email: values.email });
     if (data) {
@@ -51,7 +54,10 @@ const LoginForm = () => {
   };
 
   const loginFormSchema = Yup.object().shape({
-    password: Yup.string().min(5, 'Too Short!').max(20, 'Too Long!').required('Required'),
+    password: Yup.string()
+      .min(5, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
   });
 
@@ -68,10 +74,12 @@ const LoginForm = () => {
   });
 
   const forgotPasswordSchema = Yup.object().shape({
-    password: Yup.string().min(5, 'Too Short!').max(20, 'Too Long!').required('Required'),
+    password: Yup.string()
+      .min(5, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
   });
-
 
   const forgotPasswordFormik = useFormik({
     initialValues: {
@@ -80,18 +88,34 @@ const LoginForm = () => {
     // validate,
     validationSchema: forgotPasswordSchema,
     onSubmit: (values) => {
-        handleResetPasswordRequest(values);
+      handleResetPasswordRequest(values);
     },
   });
 
   return !forgotPassword ? (
-    <>
-      <InputText style={styles.input} placeholder='email' onChangeText={formik.handleChange('email')} value={formik.values.email} onBlur={formik.handleBlur('email')} />
+    <View style={styles.formContainer}>
+      <InputText
+        style={styles.input}
+        placeholder='email'
+        onChangeText={formik.handleChange('email')}
+        value={formik.values.email}
+        onBlur={formik.handleBlur('email')}
+      />
 
-      {formik.touched.email && formik.errors.email ? <Text>{formik.errors.email}</Text> : null}
-      <InputText style={styles.input} placeholder='password' onChangeText={formik.handleChange('password')} value={formik.values.password} onBlur={formik.handleBlur('password')} />
+      {formik.touched.email && formik.errors.email ? (
+        <Text>{formik.errors.email}</Text>
+      ) : null}
+      <InputText
+        style={styles.input}
+        placeholder='password'
+        onChangeText={formik.handleChange('password')}
+        value={formik.values.password}
+        onBlur={formik.handleBlur('password')}
+      />
 
-      {formik.touched.password && formik.errors.password ? <Text>{formik.errors.password}</Text> : null}
+      {formik.touched.password && formik.errors.password ? (
+        <Text>{formik.errors.password}</Text>
+      ) : null}
       <Touchable onPress={() => handleSubmit(formik.values)}>
         <View style={styles.btnView}>
           <Text style={styles.btnText}>Valider</Text>
@@ -103,23 +127,35 @@ const LoginForm = () => {
         </View>
       </Touchable>
       {InvalidCrentials ? <Text>{InvalidCrentials}</Text> : null}
-    </>
+    </View>
   ) : (
-    <>
+    <View style={styles.formContainer}>
       <Touchable onPress={() => setForgotPassword(false)}>
         <View style={styles.forgotPwdContainer}>
           <Text>Go back</Text>
         </View>
       </Touchable>
-      <InputText style={styles.input} placeholder='email' onChangeText={forgotPasswordFormik.handleChange('email')} value={forgotPasswordFormik.values.email} onBlur={forgotPasswordFormik.handleBlur('email')} />
-      <Touchable onPress={() => handleResetPasswordRequest(forgotPasswordFormik.values)}>
+      <InputText
+        style={styles.input}
+        placeholder='email'
+        onChangeText={forgotPasswordFormik.handleChange('email')}
+        value={forgotPasswordFormik.values.email}
+        onBlur={forgotPasswordFormik.handleBlur('email')}
+      />
+      <Touchable
+        onPress={() => handleResetPasswordRequest(forgotPasswordFormik.values)}
+      >
         <View style={styles.btnView}>
           <Text style={styles.btnText}>Valider</Text>
         </View>
       </Touchable>
-      <Toast isToastVisible={isToastVisible} navigation={setForgotPassword} setIsToastVisible={setIsToastVisible} toastText="Si votre email est enregistré chez nous, vous allez recevoir un email avec la procédure d'oubli de mot de passe" />
-    </>
-    //TODO forgot password component here
+      <Toast
+        isToastVisible={isToastVisible}
+        navigation={setForgotPassword}
+        setIsToastVisible={setIsToastVisible}
+        toastText="Si votre email est enregistré chez nous, vous allez recevoir un email avec la procédure d'oubli de mot de passe"
+      />
+    </View>
   );
 };
 
@@ -127,33 +163,24 @@ export default LoginForm;
 
 const styles = StyleSheet.create({
   formContainer: {
-    backgroundColor: Colors.primary,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    width: WindowWidth,
+    height: WindowHeight,
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
     justifyContent: 'center',
-    padding: 30,
+    alignItems: 'center',
   },
   btnView: {
-    minWidth: 180,
-    width: '70%',
+    width: Dimensions.get('window').width / 2,
     paddingVertical: 5,
-    marginTop: 15,
-    backgroundColor: Colors.accent,
+    marginTop: 35,
+    backgroundColor: Colors.lightGrey,
     borderRadius: 10,
   },
   btnText: {
     fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold',
+    color: Colors.primaryDark,
+    fontFamily: 'fira-medium',
     textAlign: 'center',
   },
   forgotPwdContainer: {
@@ -164,6 +191,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   input: {
+    borderRadius: 6,
     width: Dimensions.get('window').width / 2,
-  }
+  },
 });

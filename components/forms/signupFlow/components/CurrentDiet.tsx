@@ -1,8 +1,22 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { OBJECTIVES } from '..';
 import { Colors } from '../../../../contants/Colors';
 import Touchable from '../../../UI/touchable/Touchable';
-import { DIET, SignUpInfos } from '../index';
+
+export enum DIET {
+    VEGETARIAN = 'Végétarien',
+    VEGAN = 'Végan',
+    FLEX = 'Flexitarien',
+    OTHER = 'Autre',
+  }
+  
+  export interface SignUpInfos {
+    objective: OBJECTIVES | null;
+    height: number | '';
+    weight: number | '';
+    diet: DIET | null;
+  }
 
 interface Props {
   setSignupInfos: Dispatch<SetStateAction<SignUpInfos>>;
