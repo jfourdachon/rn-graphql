@@ -5,6 +5,7 @@ import ObjectiveStep from './ObjectiveStep';
 import {SignUpInfos} from '../index'
 import CurrentHeight from './CurrentHeight';
 import CurrentDiet from './CurrentDiet';
+import Recap from './Recap';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -25,6 +26,7 @@ const Slide = ({ data, index, setSignupInfos, signupInfos }: Props) => {
       {index === 0 && <ObjectiveStep setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
       {index === 1 && <CurrentHeight setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
       {index === 2 && <CurrentDiet setSignupInfos={setSignupInfos} signupInfos={signupInfos} />}
+      {index === 3 && <Recap  signupInfos={signupInfos} />}
     </View>
   );
 };

@@ -2,11 +2,12 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { Colors } from '../../../contants/Colors';
+import SignupForm from '../SignupForm';
 import Slide from './components/Slide';
 
 export enum OBJECTIVES {
   UP = 'Prendre du poids',
-  DOWN = 'Perder du poids',
+  DOWN = 'Perdre du poids',
   HEALTH_FOOD = 'Améliorer mon alimentation',
 }
 
@@ -48,6 +49,7 @@ const SignupFlow = () => {
     diet: null,
   });
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [isReadyToSignup, setIsReadyToSignup] = useState(false);
 
   const nextStep = () => {
     const goNext = () => {
@@ -68,13 +70,31 @@ const SignupFlow = () => {
         if (signupInfos.weight && signupInfos.height) {
           goNext();
         }
+        break;
       case 2:
         if (signupInfos.diet) {
           goNext();
         }
+        break;
+      case 3:
+        if (signupInfos.diet) {
+          setIsReadyToSignup(true);
+        }
+        break;
+      default:
+        break;
     }
   };
-  return (
+
+  const modify = () => {
+    listRef.current.scrollToIndex({
+      index: 0,
+      animated: false,
+    });
+    setCurrentStepIndex(0);
+    setStepIndex(0);
+  };
+  return !isReadyToSignup ? (
     <View style={{ flex: 1 }}>
       <FlatList
         ref={(ref) => (listRef.current = ref)}
@@ -101,13 +121,27 @@ const SignupFlow = () => {
         decelerationRate={0}
       />
 
-      <View style={styles.nextBtnContainer}>
+      <View
+        style={[
+          styles.nextBtnContainer,
+          currentStepIndex === 3 ? styles.twoBtn : styles.onlyNextBtn,
+        ]}
+      >
+        {currentStepIndex === 3 && (
+          <TouchableOpacity onPress={modify}>
+            <Text style={styles.btnText}>Modifier</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={nextStep}>
           <Text style={styles.btnText}>
             {stepIndex < slideList.length - 1 ? 'Next Step' : 'Submit'}
           </Text>
         </TouchableOpacity>
       </View>
+    </View>
+  ) : (
+    <View style={styles.signupContainer}>
+      <SignupForm />
     </View>
   );
 };
@@ -119,14 +153,21 @@ const styles = StyleSheet.create({
     height: '15%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginRight: 50,
+    marginHorizontal: 50,
     borderRadius: 20,
     overflow: 'hidden',
+  },
+  onlyNextBtn: { justifyContent: 'flex-end' },
+  twoBtn: {
+    justifyContent: 'space-between',
   },
   btnText: {
     fontFamily: 'fira-medium',
     fontSize: 18,
     color: Colors.light,
+  },
+  signupContainer: {
+    backgroundColor: Colors.primary,
+    flex: 1,
   },
 });

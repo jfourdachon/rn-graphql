@@ -62,7 +62,7 @@ const SignupForm = () => {
   });
 
   return (
-    <>
+    <View style={{minWidth: 350}}>
       <InputText
         style={styles.input}
         placeholder='email'
@@ -110,7 +110,7 @@ const SignupForm = () => {
           <Text style={styles.btnText}>Valider</Text>
         </View>
       </Touchable>
-    </>
+    </View>
   );
 };
 
