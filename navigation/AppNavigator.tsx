@@ -4,11 +4,13 @@ import { NavigationContainer, NavigationContainerRef, useLinking } from '@react-
 import * as Linking from 'expo-linking';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
+import { GetAuthenticatedUser } from '../store/auth/query';
 
 const prefix = Linking.makeUrl('/');
 
 const AppNavigator = () => {
   const ref = useRef(null);
+  const {loading, data, error} = GetAuthenticatedUser()
 
   const { getInitialState } = useLinking(ref, {
     prefixes: [prefix],
@@ -34,6 +36,10 @@ const AppNavigator = () => {
     };
     getState()
   }, [getInitialState]);
+
+  useEffect(() => {
+    console.log({loading, data, error})
+  }, [])
 
   if (!isReady) {
     return null;

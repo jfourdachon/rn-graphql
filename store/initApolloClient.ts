@@ -12,7 +12,10 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = SecureStore.getItemAsync('token')
+    let token;
+    try {
+        token = SecureStore.getItemAsync('token')
+    } catch (error) {}
     // return the headers to the context so httpLink can read them
     return {
         headers: {
@@ -21,6 +24,20 @@ const authLink = setContext((_, { headers }) => {
         }
     }
 });
+
+const resetToken = onError(({ networkError, graphQLErrors }) => {
+
+    if (
+     graphQLErrors && graphQLErrors[0].message === 'Unauthorized'
+    ) {
+      // remove cached token on 401 from the server
+      //TODO handle refreshToken here
+      const token = SecureStore.getItemAsync('token')
+    }
+  });
+  
+
+const authFlowLink = authLink.concat(resetToken);
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
@@ -34,7 +51,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   });
 
 const client = new ApolloClient({
-    link: from([errorLink, authLink, httpLink]),
+    link: from([errorLink, authFlowLink, httpLink]),
     cache: new InMemoryCache(),
     credentials: API_CREDENTIALS
 });
