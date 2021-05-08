@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { SignUpInfos } from '..';
+import { SignUpInfos } from '../types';
 import { Colors } from '../../../../contants/Colors';
 
 
 interface Props {
     signupInfos: SignUpInfos;
-  }
+}
 
 const Recap = ({signupInfos}: Props) => {
   return (
