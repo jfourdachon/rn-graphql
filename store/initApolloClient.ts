@@ -3,9 +3,8 @@ import { onError } from "@apollo/client/link/error";
 import { setContext } from '@apollo/client/link/context';
 import { persistCache, AsyncStorageWrapper } from 'apollo3-cache-persist';
 import { API_URL, API_CREDENTIALS } from "@env";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { cache } from './cache'
-
 
 
 const httpLink = createHttpLink({
@@ -17,7 +16,7 @@ const authLink = setContext(async (_, { headers }) => {
     // get the authentication token from local storage if it exists
     let token;
     try {
-        token = await AsyncStorage.getItem('token')
+        token = await SecureStore.getItemAsync('token')
     } catch (error) { }
     // return the headers to the context so httpLink can read them
     return {

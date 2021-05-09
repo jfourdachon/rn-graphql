@@ -10,6 +10,8 @@ import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
 import { GetAuthenticatedUser, IsLoggedIn } from '../store/auth/query';
 import { gql } from '@apollo/client';
+import { isLoggedInVar } from '../store/cache';
+import { ActivityIndicator, View } from 'react-native';
 
 const prefix = Linking.makeUrl('/');
 
@@ -46,11 +48,22 @@ const AppNavigator = () => {
 
 
   
-  console.log({data})
+  console.log({data, loading, loadAuthenticatedUser, error})
+  useEffect(() => {
+      if(loadAuthenticatedUser) {
+        isLoggedInVar(true)
+      }
+  })
 
   if (!isReady) {
     return null;
   }
+
+  if(loading) return (
+  <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  <ActivityIndicator />
+  </View>
+  )
 
   return (
     <NavigationContainer initialState={initialState} ref={ref}>
