@@ -1,16 +1,23 @@
 import 'react-native-gesture-handler';
 import React, { RefObject, useEffect, useRef, useState } from 'react';
-import { NavigationContainer, NavigationContainerRef, useLinking } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  useLinking,
+} from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
-import { GetAuthenticatedUser } from '../store/auth/query';
+import { GetAuthenticatedUser, IsLoggedIn } from '../store/auth/query';
+import { gql } from '@apollo/client';
 
 const prefix = Linking.makeUrl('/');
 
 const AppNavigator = () => {
   const ref = useRef(null);
-  const {loading, data, error} = GetAuthenticatedUser()
+    const {loading, data: loadAuthenticatedUser, error} = GetAuthenticatedUser()
+    const { data } = IsLoggedIn();
+
 
   const { getInitialState } = useLinking(ref, {
     prefixes: [prefix],
@@ -34,12 +41,12 @@ const AppNavigator = () => {
 
       setIsReady(true);
     };
-    getState()
+    getState();
   }, [getInitialState]);
 
-  useEffect(() => {
-    console.log({loading, data, error})
-  }, [])
+
+  
+  console.log({data})
 
   if (!isReady) {
     return null;
@@ -47,8 +54,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer initialState={initialState} ref={ref}>
-      <AuthNavigator />
-      {/* <MainNavigator /> */}
+      {data?.isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };
