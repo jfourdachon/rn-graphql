@@ -1,11 +1,10 @@
 import { gql, useMutation } from '@apollo/client';
+import * as SecureStore from 'expo-secure-store';
+import { isLoggedInVar } from '../cache';
 
 
 interface SignupData {
-    _id: String
-    email: String
-    username: String
-    isVegetarian: Boolean
+    token: string
 }
 
 interface SignupDto {
@@ -19,24 +18,30 @@ interface SignupDto {
 const SIGNUP = gql`
   mutation Signup($signupDto: SignupDto!) {
     signup(signupDto: $signupDto) {
-      username
+      token
     }
   }
 `;
 
 
 export const useSignup = () => {
-    const [signup] = useMutation(SIGNUP);
+    const [signup] = useMutation<{ signup: SignupData }, { signupDto: SignupDto }>(SIGNUP, {
+        async onCompleted({ signup }) {
+            if (signup) {
+                await SecureStore.setItemAsync('token', signup.token as string);
+                isLoggedInVar(true);
+            }
+        }
+    });
     return async (variables: SignupDto) => {
         try {
-            console.log({ variables })
             const {
                 email,
                 username,
                 password,
                 isVegetarian
             } = variables
-  
+
 
             const { data, } = await signup({
                 variables: {
@@ -59,10 +64,7 @@ export const useSignup = () => {
 
 
 interface LoginData {
-    _id: String
-    email: String
-    username: String
-    isVegetarian: Boolean
+    token: string
 }
 
 interface LoginDto {
@@ -74,15 +76,22 @@ interface LoginDto {
 const LOGIN = gql`
   mutation Login($loginDto: LoginDto!) {
     login(loginDto: $loginDto) {
-      username
+      token
     }
   }
 `;
 
 
 export const useLogin = () => {
-    const [login] = useMutation<{ login: LoginData }, { loginDto: LoginDto }>(LOGIN);
-    return async (variables: LoginDto) => {
+    const [login] = useMutation<{ login: LoginData }, { loginDto: LoginDto }>(LOGIN, {
+        async onCompleted({ login }) {
+            if (login) {
+                await SecureStore.setItemAsync('token', login.token as string);
+                isLoggedInVar(true);
+            }
+        }
+    });
+    return async (variables: LoginDto, onCompleted: any) => {
         try {
             const {
                 email,

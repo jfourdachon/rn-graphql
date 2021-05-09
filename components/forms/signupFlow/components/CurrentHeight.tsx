@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useMemo } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { SignUpInfos } from '..';
+import { SignUpInfos } from '../types';
 import { Colors } from '../../../../contants/Colors';
 import { KeyboardType } from '../../../../typescript/enums/form';
 import DropDown from '../../../UI/DropDown';

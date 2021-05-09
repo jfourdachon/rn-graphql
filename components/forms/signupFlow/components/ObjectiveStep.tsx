@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { OBJECTIVES, SignUpInfos } from '../index';
+import { OBJECTIVES, SignUpInfos } from '../types';
 import { Colors } from '../../../../contants/Colors';
 import Touchable from '../../../UI/touchable/Touchable';
 

@@ -18,44 +18,44 @@ interface Lessons {
     users: User[]
 }
 
-const GET_LESSONS = gql`
- query Lessons {
-  lessons {
-    _id
-    name
-    startDate
-    endDate
-    users {
-      _id
-      username
-      email
-    }
-  }
-}
-`;
+// const GET_LESSONS = gql`
+//  query Lessons {
+//   lessons {
+//     _id
+//     name
+//     startDate
+//     endDate
+//     users {
+//       _id
+//       username
+//       email
+//     }
+//   }
+// }
+// `;
 
-const GetAllLessons = () => {
-    const {loading, error, data} = useQuery<Lessons>(GET_LESSONS);
+// const GetAllLessons = () => {
+//     const {loading, error, data} = useQuery<Lessons>(GET_LESSONS);
 
-    if(error) {
-        console.log({error})
-        throw new Error(error.message)
-    }
+//     if(error) {
+//         console.log({error})
+//         throw new Error(error.message)
+//     }
 
-    return {
-        loading,
-        data,
-    }
-}
+//     return {
+//         loading,
+//         data,
+//     }
+// }
 
 const HomeScreen = () => {
 
-    const { loading, data } = GetAllLessons()
+    // const { loading, data } = GetAllLessons()
 
-    if (loading) console.log('loading...')
-    if(data) {
-      console.log(data)
-    }
+    // if (loading) console.log('loading...')
+    // if(data) {
+    //   console.log(data)
+    // }
 
     return (
         <View style={styles.screen}>
