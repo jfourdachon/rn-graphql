@@ -28,13 +28,10 @@ const LoginForm = () => {
 
   const handleLogin = async (values: LoginValues) => {
     const { email, password } = values;
-    const { data, error } = await login({ email, password });
+    const { data, error } = await login({ email, password }, {});
     if (error) {
       console.log(error.message);
       setInvalidCrentials(error.message);
-    }
-    if (data) {
-      console.log(data);
     }
   };
 
@@ -44,9 +41,6 @@ const LoginForm = () => {
     setIsToastVisible(true);
 
     const { data } = await resetPasswordRequest({ email: values.email });
-    if (data) {
-      console.log(data);
-    }
   };
 
   const handleSubmit = (values: LoginValues) => {

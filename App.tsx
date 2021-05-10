@@ -24,7 +24,6 @@ export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   if (!fontLoaded) {
-      console.log('prout')
     return (
       <AppLoading
         startAsync={fetchFonts}

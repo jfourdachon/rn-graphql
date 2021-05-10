@@ -16,11 +16,11 @@ function range(start: number, end: number) {
   return Array(end - start + 1)
     .fill(null)
     .map((_, idx) => {
-      return { label: start + idx, value: start + idx };
+      return { label: (start + idx).toString(), value: start + idx };
     });
 }
 
-const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
+const CurrentShape = ({ signupInfos, setSignupInfos }: Props) => {
   const createHeightSelect = useMemo(() => range(120, 220), []);
   const createWeightSelect = useMemo(() => range(35, 180), []);
 
@@ -45,8 +45,15 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
         <View style={styles.colTitleContainer}>
           <Text>Ta taille actuelle</Text>
           <View style={styles.inputRow}>
-            <DropDown />
-           
+            <DropDown
+              items={createHeightSelect}
+              onValueChange={(e) => setHeight(e)}
+              value={signupInfos.height}
+              placeholder={{
+                label: 'Selectionnez votre taille',
+                value: null,
+              }}
+            />
             <Text>cm</Text>
           </View>
         </View>
@@ -55,12 +62,14 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
         <View style={styles.colTitleContainer}>
           <Text>Ton poids actuel</Text>
           <View style={styles.inputRow}>
-            <InputText
-              placeholder='ex: 68'
-              keyboardType={KeyboardType.NumberPad}
-              value={signupInfos.weight.toString()}
-              //TODO create method to handle weight
-              onChangeText={setWeight}
+            <DropDown
+              items={createWeightSelect}
+              onValueChange={(e) => setWeight(e)}
+              value={signupInfos.weight}
+              placeholder={{
+                label: 'Selectionnez votre poids',
+                value: null,
+              }}
             />
             <Text>Kg</Text>
           </View>
@@ -70,7 +79,7 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
   );
 };
 
-export default CurrentHeight;
+export default CurrentShape;
 
 const styles = StyleSheet.create({
   mainRow: {

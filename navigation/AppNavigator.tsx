@@ -48,7 +48,6 @@ const AppNavigator = () => {
 
 
   
-  console.log({data, loading, loadAuthenticatedUser, error})
   useEffect(() => {
       if(loadAuthenticatedUser) {
         isLoggedInVar(true)
@@ -58,6 +57,7 @@ const AppNavigator = () => {
   if (!isReady) {
     return null;
   }
+  console.log({data})
 
   if(loading) return (
   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

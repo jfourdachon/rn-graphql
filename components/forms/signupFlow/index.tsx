@@ -27,8 +27,8 @@ const SignupFlow = () => {
   const [stepIndex, setStepIndex] = useState(0);
   const [signupInfos, setSignupInfos] = useState<SignUpInfos>({
     objective: null,
-    height: '',
-    weight: '',
+    height: 150,
+    weight: 60,
     diet: null,
   });
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -124,7 +124,7 @@ const SignupFlow = () => {
     </View>
   ) : (
     <View style={styles.signupContainer}>
-      <SignupForm />
+      <SignupForm signupInfos={signupInfos} />
     </View>
   );
 };
