@@ -3,8 +3,8 @@ import RNPickerSelect from 'react-native-picker-select';
 import { StyleSheet, Text, View } from 'react-native';
 
 export interface Item {
-    label: string;
-    value: any;
+  label: string;
+  value: any;
 }
 
 interface Props {
@@ -14,11 +14,11 @@ interface Props {
   placeholder: Item;
 }
 
-const DropDown = ({items, onValueChange, value, placeholder}: Props) => {
+const DropDown = ({ items, onValueChange, value, placeholder }: Props) => {
   return (
     <RNPickerSelect
       style={{ ...pickerSelectStyles }}
-      onValueChange={onValueChange}
+      onValueChange={(e) => onValueChange(e)}
       value={value}
       items={items}
       placeholder={placeholder}
@@ -30,6 +30,7 @@ export default DropDown;
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
+    width: 80,
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
@@ -40,6 +41,8 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
+    width: 80,
+
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,

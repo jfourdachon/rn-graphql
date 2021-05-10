@@ -20,7 +20,7 @@ function range(start: number, end: number) {
     });
 }
 
-const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
+const CurrentShape = ({ signupInfos, setSignupInfos }: Props) => {
   const createHeightSelect = useMemo(() => range(120, 220), []);
   const createWeightSelect = useMemo(() => range(35, 180), []);
 
@@ -47,7 +47,7 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
           <View style={styles.inputRow}>
             <DropDown
               items={createHeightSelect}
-              onValueChange={setHeight}
+              onValueChange={(e) => setHeight(e)}
               value={signupInfos.height}
               placeholder={{
                 label: 'Selectionnez votre taille',
@@ -64,7 +64,7 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
           <View style={styles.inputRow}>
             <DropDown
               items={createWeightSelect}
-              onValueChange={setHeight}
+              onValueChange={(e) => setWeight(e)}
               value={signupInfos.weight}
               placeholder={{
                 label: 'Selectionnez votre poids',
@@ -79,7 +79,7 @@ const CurrentHeight = ({ signupInfos, setSignupInfos }: Props) => {
   );
 };
 
-export default CurrentHeight;
+export default CurrentShape;
 
 const styles = StyleSheet.create({
   mainRow: {
