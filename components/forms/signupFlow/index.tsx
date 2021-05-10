@@ -124,7 +124,7 @@ const SignupFlow = () => {
     </View>
   ) : (
     <View style={styles.signupContainer}>
-      <SignupForm />
+      <SignupForm signupInfos={signupInfos} />
     </View>
   );
 };

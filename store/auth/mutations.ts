@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import * as SecureStore from 'expo-secure-store';
+import { DIET, OBJECTIVES, SignUpInfos } from '../../components/forms/signupFlow/types';
 import { isLoggedInVar } from '../cache';
 
 
@@ -10,8 +11,11 @@ interface SignupData {
 interface SignupDto {
     email: String
     username: String
-    isVegetarian: Boolean
-    password: String,
+    password: String
+    diet: DIET | null
+    objective: OBJECTIVES | null
+    height: number
+    weight: number
 }
 
 
@@ -39,17 +43,21 @@ export const useSignup = () => {
                 email,
                 username,
                 password,
-                isVegetarian
+                diet,
+                objective,
+                height,
+                weight
             } = variables
-
-
             const { data, } = await signup({
                 variables: {
                     signupDto: {
                         email,
                         username,
                         password,
-                        isVegetarian
+                        diet,
+                        objective,
+                        height,
+                        weight
                     }
                 },
             })

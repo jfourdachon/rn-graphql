@@ -7,25 +7,28 @@ import { useSignup } from '../../store/auth/mutations';
 import Touchable from '../UI/touchable/Touchable';
 import InputText from '../UI/InputText';
 import { Colors } from '../../contants/Colors';
+import { SignUpInfos } from './signupFlow/types';
 
 type SignupValues = {
   email: string;
   username: string;
   password: string;
   confirmPassword: string;
-  //   isVegetarian: boolean;
 };
 
-const SignupForm = () => {
-  const [isVegetarian, setIsVegetarian] = useState(false);
+interface Props {
+    signupInfos: SignUpInfos
+}
+
+const SignupForm = ({signupInfos}: Props) => {
   const [errorMail, setErrorMail] = useState('');
-  const toggleSwitch = () => setIsVegetarian((previousState) => !previousState);
   const signup = useSignup();
 
   const handleSignUp = async (values: SignupValues) => {
     setErrorMail('');
     const { email, password, username } = values;
-    const { error } = await signup({ email, password, username, isVegetarian });
+    const {weight, height, diet, objective} = signupInfos
+    const { error } = await signup({ email, password, username, weight, height, diet, objective });
     if (error) {
       if (error.message === 'Email is already in use')
         setErrorMail(error.message);
@@ -58,9 +61,7 @@ const SignupForm = () => {
       username: '',
       password: '',
       confirmPassword: '',
-      //   isVegetarian: false,
     },
-    // validate,
     validationSchema: authFormSchema,
     onSubmit: (values) => {
       handleSignUp(values);

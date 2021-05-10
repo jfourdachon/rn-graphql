@@ -1,7 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache, from, gql, NormalizedCacheObject } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 import { setContext } from '@apollo/client/link/context';
-import { persistCache, AsyncStorageWrapper } from 'apollo3-cache-persist';
 import { API_URL, API_CREDENTIALS } from "@env";
 import * as SecureStore from 'expo-secure-store';
 import { cache } from './cache'
@@ -57,10 +56,6 @@ export const typeDefs = gql`
   }
 `;
 
-// export const waitOnCache = persistCache({
-//     cache,
-//     storage: AsyncStorage
-// })
 
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({

@@ -17,6 +17,7 @@ interface Props {
 const DropDown = ({ items, onValueChange, value, placeholder }: Props) => {
   return (
     <RNPickerSelect
+      useNativeAndroidPickerStyle={false}
       style={{ ...pickerSelectStyles }}
       onValueChange={(e) => onValueChange(e)}
       value={value}
