@@ -13,14 +13,7 @@ export enum DIET {
 
 export interface SignUpInfos {
     objective: OBJECTIVES | null;
-    height: number | '';
-    weight: number | '';
-    diet: DIET | null;
-}
-
-export interface SignUpInfos {
-    objective: OBJECTIVES | null;
-    height: number | '';
-    weight: number | '';
+    height: number;
+    weight: number;
     diet: DIET | null;
 }
