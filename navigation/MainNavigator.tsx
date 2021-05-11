@@ -1,15 +1,34 @@
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import HealthyMealScreen from '../screens/HealthyMealScreen';
-import RecipeScreen from '../screens/RecipeScreen';
+import RecipeScreen from '../screens/recipe/Snack';
 import { Ionicons } from '@expo/vector-icons';
+import BreakfastScreen from '../screens/recipe/BreakfastScreen';
+import SnackScreen from '../screens/recipe/Snack';
+import MealScreen from '../screens/recipe/MealScreen';
 
 export type MainNavParam = {
   Home: undefined;
   HealthyMeal: undefined;
   Recipe: undefined;
 };
+
+const RecipeTopTabNavigator = createMaterialTopTabNavigator();
+
+const RecipeNavigator = () => {
+    <RecipeTopTabNavigator.Navigator>
+        <RecipeTopTabNavigator.Screen name="Breakfast" component={BreakfastScreen}/>
+        <RecipeTopTabNavigator.Screen name="Snack" component={SnackScreen}/>
+        <RecipeTopTabNavigator.Screen name="Meal" component={MealScreen}/>
+    </RecipeTopTabNavigator.Navigator>
+}
+
+
+
+
+
 const MainTabNavigator = createMaterialBottomTabNavigator<MainNavParam>();
 
 export const MainNavigator = () => {
@@ -17,7 +36,7 @@ export const MainNavigator = () => {
     <MainTabNavigator.Navigator
       activeColor='#3e2465' 
       inactiveColor='#f0edf6'
-      barStyle={{ backgroundColor: '#8e86a1', borderRadius: 40 }}
+      barStyle={{ backgroundColor: '#8e86a1',borderTopRightRadius: 10, borderTopLeftRadius: 10,  overflow: 'hidden', }}
       labeled={false}
     >
       <MainTabNavigator.Screen
@@ -40,7 +59,7 @@ export const MainNavigator = () => {
       />
       <MainTabNavigator.Screen
         name='Recipe'
-        component={RecipeScreen}
+        component={RecipeNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name='ios-book-outline' color={color} size={26} />

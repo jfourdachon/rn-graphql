@@ -1,20 +1,20 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const RecipeScreen = () => {
+const BreakfastScreen = () => {
     return (
         <View style={styles.screen}>
-            <Text>Ici la liste des recettes</Text>
+            <Text>Ici la liste des petits dejs</Text>
         </View>
     )
 }
 
-export default RecipeScreen
+export default BreakfastScreen
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
       },
 })
