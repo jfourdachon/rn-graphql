@@ -4,8 +4,6 @@ import * as SecureStore from 'expo-secure-store';
 import client from '../store/initApolloClient';
 import { isLoggedInVar } from '../store/cache';
 
-//TODO put apollo stuff in a store folder
-
 interface User {
   _id: String;
   username: String;
@@ -19,43 +17,8 @@ interface Lessons {
   users: User[];
 }
 
-// const GET_LESSONS = gql`
-//  query Lessons {
-//   lessons {
-//     _id
-//     name
-//     startDate
-//     endDate
-//     users {
-//       _id
-//       username
-//       email
-//     }
-//   }
-// }
-// `;
-
-// const GetAllLessons = () => {
-//     const {loading, error, data} = useQuery<Lessons>(GET_LESSONS);
-
-//     if(error) {
-//         console.log({error})
-//         throw new Error(error.message)
-//     }
-
-//     return {
-//         loading,
-//         data,
-//     }
-// }
 
 const HomeScreen = () => {
-  // const { loading, data } = GetAllLessons()
-
-  // if (loading) console.log('loading...')
-  // if(data) {
-  //   console.log(data)
-  // }
 
   const onLogout = async () => {
     try {
