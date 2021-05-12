@@ -9,7 +9,7 @@ interface Props {
 const SplashScreen = ({onAnimationFinish}: Props) => {
   return (
     <View style={styles.sreen}>
-      <LottieView style={styles.animation} source={require('../assets/lottie/splash.json')} autoPlay onAnimationFinish={onAnimationFinish} />
+      <LottieView style={styles.animation} source={require('../assets/lottie/splash.json')} loop={false} autoPlay onAnimationFinish={onAnimationFinish} />
     </View>
   );
 };
