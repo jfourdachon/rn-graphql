@@ -12,14 +12,18 @@ import { GetAuthenticatedUser, IsLoggedIn } from '../store/auth/query';
 import { gql } from '@apollo/client';
 import { isLoggedInVar } from '../store/cache';
 import { ActivityIndicator, View } from 'react-native';
+import SplashScreen from '../screens/SplashScreen';
 
 const prefix = Linking.makeUrl('/');
 
 const AppNavigator = () => {
   const ref = useRef(null);
-    const {loading, data: loadAuthenticatedUser, error} = GetAuthenticatedUser()
-    const { data } = IsLoggedIn();
-
+  const {
+    loading,
+    data: loadAuthenticatedUser,
+    error,
+  } = GetAuthenticatedUser();
+  const { data } = IsLoggedIn();
 
   const { getInitialState } = useLinking(ref, {
     prefixes: [prefix],
@@ -40,30 +44,26 @@ const AppNavigator = () => {
       if (state !== undefined) {
         setInitialState(state);
       }
-
-      setIsReady(true);
     };
     getState();
   }, [getInitialState]);
 
-
-  
   useEffect(() => {
-      if(loadAuthenticatedUser) {
-        isLoggedInVar(true)
-      }
-  })
+    if (loadAuthenticatedUser) {
+      isLoggedInVar(true);
+    }
+  });
 
   if (!isReady) {
-    return null;
+    return <SplashScreen onAnimationFinish={() => setIsReady(true)} />;
   }
-  console.log({data})
 
-  if(loading) return (
-  <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-  <ActivityIndicator />
-  </View>
-  )
+  if (loading)
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    );
 
   return (
     <NavigationContainer initialState={initialState} ref={ref}>
