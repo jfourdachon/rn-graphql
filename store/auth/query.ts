@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
+import { isLoggedInVar } from '../cache';
 
 
 const WHOAMI = gql`
@@ -35,3 +36,12 @@ export const IsLoggedIn = () => {
         data
     }
 }
+
+
+export const REFRESH_TOKEN = gql`
+    query RefreshToken {
+        refreshToken {
+            token
+        }
+    }
+`;

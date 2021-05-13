@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import BreakfastScreen from '../screens/recipe/BreakfastScreen';
 import SnackScreen from '../screens/recipe/Snack';
 import MealScreen from '../screens/recipe/MealScreen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export type MainNavParam = {
   Home: undefined;
