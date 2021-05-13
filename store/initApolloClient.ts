@@ -1,5 +1,5 @@
 import { ApolloClient, from, NormalizedCacheObject } from '@apollo/client';
-import { API_CREDENTIALS } from "@env";
+import { API_CREDENTIALS } from "react-native-dotenv";
 import { cache } from './cache'
 import {errorLink} from './errorLink'
 import {authLink} from './autLink'

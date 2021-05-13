@@ -1,6 +1,6 @@
 import { createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { API_URL } from "@env";
+import { API_URL } from "react-native-dotenv";
 import * as SecureStore from 'expo-secure-store';
 
 export const authLink = setContext(async (_, { headers }) => {

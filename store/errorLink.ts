@@ -1,6 +1,6 @@
 import { ApolloClient, createHttpLink, fromPromise } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
-import { API_URL } from "@env";
+import { API_URL } from "react-native-dotenv";
 import * as SecureStore from 'expo-secure-store';
 import { cache, isLoggedInVar } from './cache'
 import { REFRESH_TOKEN } from './auth/query'
