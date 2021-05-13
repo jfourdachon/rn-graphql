@@ -1,15 +1,11 @@
 import 'react-native-gesture-handler';
-import React, { RefObject, useEffect, useRef, useState } from 'react';
-import {
-  NavigationContainer,
-  NavigationContainerRef,
-  useLinking,
-} from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { NavigationContainer, useLinking } from '@react-navigation/native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
 import { GetAuthenticatedUser, IsLoggedIn } from '../store/auth/query';
-import { gql } from '@apollo/client';
 import { isLoggedInVar } from '../store/cache';
 import { ActivityIndicator, View } from 'react-native';
 import SplashScreen from '../screens/SplashScreen';
@@ -61,7 +57,7 @@ const AppNavigator = () => {
       const test = await SecureStore.getItemAsync('token');
       console.log(test);
     };
-    tester()
+    tester();
   }, []);
 
   if (!isReady) {
@@ -76,9 +72,13 @@ const AppNavigator = () => {
     );
 
   return (
-    <NavigationContainer initialState={initialState} ref={ref}>
-      {data?.isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer initialState={initialState} ref={ref}>
+        <SafeAreaView style={{ flex: 1 }}>
+          {data?.isLoggedIn ? <MainNavigator /> : <AuthNavigator />}
+        </SafeAreaView>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
