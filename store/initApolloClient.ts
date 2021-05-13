@@ -1,9 +1,10 @@
-import { ApolloClient, createHttpLink, InMemoryCache, from, gql, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache, from, gql, NormalizedCacheObject, fromPromise } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 import { setContext } from '@apollo/client/link/context';
 import { API_URL, API_CREDENTIALS } from "@env";
 import * as SecureStore from 'expo-secure-store';
-import { cache } from './cache'
+import { cache, isLoggedInVar } from './cache'
+import { REFRESH_TOKEN } from './auth/query'
 
 
 const httpLink = createHttpLink({
@@ -26,29 +27,83 @@ const authLink = setContext(async (_, { headers }) => {
     }
 });
 
-const resetToken = onError(({ networkError, graphQLErrors }) => {
 
-    if (
-        graphQLErrors && graphQLErrors[0].message === 'Unauthorized'
-    ) {
-        // remove cached token on 401 from the server
-        //TODO handle refreshToken here
+// TODO separate links in multiple files
+
+let isRefreshing = false
+let pendingRequests: Function[] = []
+
+const setIsRefreshing = (value: boolean) => {
+    isRefreshing = value
+}
+
+const addPendingRequest = (pendingRequest: Function) => {
+    pendingRequests.push(pendingRequest)
+}
+
+const renewTokenApiClient = new ApolloClient({
+    link: createHttpLink({ uri: API_URL }),
+    cache,
+    credentials: 'include',
+})
+
+const resolvePendingRequests = () => {
+    pendingRequests.map((callback) => callback())
+    pendingRequests = []
+}
+
+const getNewToken = async () => {
+    // const oldRenewalToken = localStorage.getItem('renewalToken')
+
+    try {
+        const { data } = await renewTokenApiClient.query({ query: REFRESH_TOKEN })
+        if (data?.refreshToken?.token) {
+
+            await SecureStore.setItemAsync('token', data.refreshToken.token)
+            isLoggedInVar(true)
+        }
+
+    } catch (error) {
+        console.log({ error })
     }
-});
+
+}
 
 
-const authFlowLink = authLink.concat(resetToken);
+const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+    if (graphQLErrors) {
+        graphQLErrors.forEach(({ message, locations, path }) => {
+            if (message === 'Unauthorized') {
+                if (!isRefreshing) {
+                    setIsRefreshing(true)
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-        graphQLErrors.forEach(({ message, locations, path }) =>
-            console.log(
-                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-            ),
-        );
+                    return fromPromise(
+                        getNewToken().catch(async () => {
+                            resolvePendingRequests()
+                            setIsRefreshing(false)
+                            // TODO logout
+                            await SecureStore.deleteItemAsync('token')
 
-    if (networkError) console.log(`[Network error]: ${networkError}`);
-});
+                            return forward(operation)
+                        }),
+                    ).flatMap(() => {
+                        resolvePendingRequests()
+                        setIsRefreshing(false)
+                        return forward(operation)
+                    })
+                } else {
+                    return fromPromise(
+                        new Promise<void>((resolve) => {
+                            addPendingRequest(() => resolve())
+                        }),
+                    ).flatMap(() => {
+                        return forward(operation)
+                    })
+                }
+            }
+        });
+    }
+})
 
 export const typeDefs = gql`
   extend type Query {
@@ -59,7 +114,7 @@ export const typeDefs = gql`
 
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-    link: from([errorLink, authFlowLink, httpLink]),
+    link: from([errorLink, authLink, httpLink]),
     cache,
     credentials: API_CREDENTIALS,
     typeDefs

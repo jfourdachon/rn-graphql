@@ -13,11 +13,13 @@ import { gql } from '@apollo/client';
 import { isLoggedInVar } from '../store/cache';
 import { ActivityIndicator, View } from 'react-native';
 import SplashScreen from '../screens/SplashScreen';
+import * as SecureStore from 'expo-secure-store';
 
 const prefix = Linking.makeUrl('/');
 
 const AppNavigator = () => {
   const ref = useRef(null);
+  //TODO check if token before to avoid unauthorized error
   const {
     loading,
     data: loadAuthenticatedUser,
@@ -53,6 +55,14 @@ const AppNavigator = () => {
       isLoggedInVar(true);
     }
   });
+
+  useEffect(() => {
+    const tester = async () => {
+      const test = await SecureStore.getItemAsync('token');
+      console.log(test);
+    };
+    tester()
+  }, []);
 
   if (!isReady) {
     return <SplashScreen onAnimationFinish={() => setIsReady(true)} />;
