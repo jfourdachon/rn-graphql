@@ -37,6 +37,8 @@ const getNewToken = async () => {
 
             await SecureStore.setItemAsync('token', data.refreshToken.token)
             isLoggedInVar(true)
+        } else {
+            isLoggedInVar(false)
         }
 
     } catch (error) {

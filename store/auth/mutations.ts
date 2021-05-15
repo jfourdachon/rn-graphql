@@ -35,7 +35,6 @@ export const useSignup = () => {
             if (signup) {
                 await SecureStore.setItemAsync('token', signup.token as string);
                 isLoggedInVar(true);
-                console.log(isLoggedInVar)
             }
         }
     });
@@ -98,8 +97,6 @@ export const useLogin = () => {
             if (login) {
                 await SecureStore.setItemAsync('token', login.token as string);
                 isLoggedInVar(true);
-                const { data } = IsLoggedIn()
-                console.log({ data })
 
             }
         }
@@ -174,6 +171,7 @@ export const useLogout = () => {
     return async () => {
         try {
             const { data } = await logout()
+            isLoggedInVar(false);
             return { data }
         }
         catch (error) {
