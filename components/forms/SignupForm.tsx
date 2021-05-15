@@ -28,10 +28,13 @@ const SignupForm = ({signupInfos}: Props) => {
     setErrorMail('');
     const { email, password, username } = values;
     const {weight, height, diet, objective} = signupInfos
-    const { error } = await signup({ email, password, username, weight, height, diet, objective });
+    const { data, error } = await signup({ email, password, username, weight, height, diet, objective });
     if (error) {
       if (error.message === 'Email is already in use')
         setErrorMail(error.message);
+    }
+    if(data) {
+      console.log({data})
     }
   };
 
