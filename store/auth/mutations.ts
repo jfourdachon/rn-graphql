@@ -98,8 +98,8 @@ export const useLogin = () => {
             if (login) {
                 await SecureStore.setItemAsync('token', login.token as string);
                 isLoggedInVar(true);
-                const {data} = IsLoggedIn()
-                console.log({data})
+                const { data } = IsLoggedIn()
+                console.log({ data })
 
             }
         }
@@ -159,4 +159,26 @@ export const useResetPasswordRequest = () => {
             throw new Error(error)
         }
     }
+}
+
+const LOGOUT = gql`
+  mutation Logout {
+    logout {
+      isLoggedOut
+    }
+  }
+`;
+
+export const useLogout = () => {
+    const [logout] = useMutation(LOGOUT);
+    return async () => {
+        try {
+            const { data } = await logout()
+            return { data }
+        }
+        catch (error) {
+            throw new Error(error)
+        }
+    }
+
 }

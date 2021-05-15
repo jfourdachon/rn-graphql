@@ -3,6 +3,7 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import client from '../store/initApolloClient';
 import { isLoggedInVar } from '../store/cache';
+import { useLogout } from '../store/auth/mutations';
 
 interface User {
   _id: String;
@@ -20,9 +21,13 @@ interface Lessons {
 
 const HomeScreen = () => {
 
+    const logout = useLogout()
+
   const onLogout = async () => {
     try {
+        // TODO create mutation to clear refreshToken
       await SecureStore.deleteItemAsync('token');
+      await logout()
       client.resetStore();
       isLoggedInVar(false);
     } catch (error) {
