@@ -2,6 +2,7 @@ import { gql, useMutation } from '@apollo/client';
 import * as SecureStore from 'expo-secure-store';
 import { DIET, OBJECTIVES, SignUpInfos } from '../../components/forms/signupFlow/types';
 import { isLoggedInVar } from '../cache';
+import { IsLoggedIn } from './query';
 
 
 interface SignupData {
@@ -34,6 +35,7 @@ export const useSignup = () => {
             if (signup) {
                 await SecureStore.setItemAsync('token', signup.token as string);
                 isLoggedInVar(true);
+                console.log(isLoggedInVar)
             }
         }
     });
@@ -96,6 +98,9 @@ export const useLogin = () => {
             if (login) {
                 await SecureStore.setItemAsync('token', login.token as string);
                 isLoggedInVar(true);
+                const {data} = IsLoggedIn()
+                console.log({data})
+
             }
         }
     });

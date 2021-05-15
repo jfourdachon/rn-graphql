@@ -47,6 +47,7 @@ const AppNavigator = () => {
   }, [getInitialState]);
 
   useEffect(() => {
+    // TODO add verif if don't come from logout button
     if (loadAuthenticatedUser) {
       isLoggedInVar(true);
     }
@@ -70,7 +71,6 @@ const AppNavigator = () => {
         <ActivityIndicator />
       </View>
     );
-
   return (
     <SafeAreaProvider>
       <NavigationContainer initialState={initialState} ref={ref}>
