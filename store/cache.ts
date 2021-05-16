@@ -1,10 +1,8 @@
-import { InMemoryCache, Reference, makeVar, gql } from '@apollo/client';
+import { InMemoryCache, makeVar } from '@apollo/client';
 
 
-
-// Initializes to true if localStorage includes a 'token' key,
-// false otherwise
 export const isLoggedInVar = makeVar(false);
+export const didTryToLoginVar = makeVar(false);
 
 
 
@@ -12,11 +10,17 @@ export const cache: InMemoryCache = new InMemoryCache({
     typePolicies: {
         Query: {
             fields: {
+                didTryToLogin: {
+                    read() {
+                        return didTryToLoginVar();
+                    }
+                },
                 isLoggedIn: {
                     read() {
                         return isLoggedInVar();
                     }
                 },
+
             }
         }
     }

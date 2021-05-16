@@ -5,8 +5,8 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
-import { GetAuthenticatedUser, IsLoggedIn } from '../store/auth/query';
-import { isLoggedInVar } from '../store/cache';
+import { GetAuthenticatedUser, IsLoggedIn, DidTryToLogin} from '../store/auth/query';
+import { isLoggedInVar, didTryToLoginVar } from '../store/cache';
 import { ActivityIndicator, View } from 'react-native';
 import SplashScreen from '../screens/SplashScreen';
 import * as SecureStore from 'expo-secure-store';
@@ -22,6 +22,7 @@ const AppNavigator = () => {
     error,
   } = GetAuthenticatedUser();
   const { data } = IsLoggedIn();
+  const { didTryToLogin } = DidTryToLogin();
 
   const { getInitialState } = useLinking(ref, {
     prefixes: [prefix],
@@ -47,19 +48,23 @@ const AppNavigator = () => {
   }, [getInitialState]);
 
   useEffect(() => {
-    // TODO add verif if don't come from logout button
-    if (loadAuthenticatedUser) {
-      isLoggedInVar(true);
+      console.log('prout')
+      console.log({didTryToLogin})
+      console.log({data})
+    if (didTryToLogin) {
+      if (loadAuthenticatedUser) {
+        isLoggedInVar(true);
+      }
     }
-  });
+  },[didTryToLogin]);
 
-  useEffect(() => {
-    const tester = async () => {
-      const test = await SecureStore.getItemAsync('token');
-      console.log(test);
-    };
-    tester();
-  }, []);
+  //   useEffect(() => {
+  //     const tester = async () => {
+  //       const test = await SecureStore.getItemAsync('token');
+  //       console.log(test);
+  //     };
+  //     tester();
+  //   }, []);
 
   if (!isReady) {
     return <SplashScreen onAnimationFinish={() => setIsReady(true)} />;

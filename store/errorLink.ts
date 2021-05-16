@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, fromPromise } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 import { API_URL } from "@env";
 import * as SecureStore from 'expo-secure-store';
-import { cache, isLoggedInVar } from './cache'
+import { cache, didTryToLoginVar, isLoggedInVar } from './cache'
 import { REFRESH_TOKEN } from './auth/query'
 
 
@@ -37,8 +37,10 @@ const getNewToken = async () => {
 
             await SecureStore.setItemAsync('token', data.refreshToken.token)
             isLoggedInVar(true)
+            didTryToLoginVar(true)
         } else {
             isLoggedInVar(false)
+            didTryToLoginVar(false)
         }
 
     } catch (error) {
@@ -48,7 +50,7 @@ const getNewToken = async () => {
 }
 
 
-export const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+export const errorLink = onError(({ networkError, graphQLErrors, operation, forward }) => {
     if (graphQLErrors) {
         graphQLErrors.forEach(({ message }) => {
             if (message === 'Unauthorized') {
@@ -80,5 +82,7 @@ export const errorLink = onError(({ graphQLErrors, operation, forward }) => {
                 }
             }
         });
+    } else {
+        console.log({networkError})
     }
 })

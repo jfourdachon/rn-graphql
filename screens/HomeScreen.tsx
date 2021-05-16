@@ -29,7 +29,6 @@ const HomeScreen = () => {
       await SecureStore.deleteItemAsync('token');
       await logout()
       client.resetStore();
-      isLoggedInVar(false);
     } catch (error) {
       console.log(error);
     }
