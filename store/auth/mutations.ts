@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import * as SecureStore from 'expo-secure-store';
 import { DIET, OBJECTIVES, SignUpInfos } from '../../components/forms/signupFlow/types';
-import { isLoggedInVar } from '../cache';
+import { isLoggedInVar, isLoggedOutVar } from '../cache';
 import { IsLoggedIn } from './query';
 
 
@@ -35,7 +35,6 @@ export const useSignup = () => {
             if (signup) {
                 await SecureStore.setItemAsync('token', signup.token as string);
                 isLoggedInVar(true);
-                console.log(isLoggedInVar)
             }
         }
     });
@@ -98,8 +97,6 @@ export const useLogin = () => {
             if (login) {
                 await SecureStore.setItemAsync('token', login.token as string);
                 isLoggedInVar(true);
-                const { data } = IsLoggedIn()
-                console.log({ data })
 
             }
         }
@@ -164,7 +161,7 @@ export const useResetPasswordRequest = () => {
 const LOGOUT = gql`
   mutation Logout {
     logout {
-      isLoggedOut
+        isLoggedOut
     }
   }
 `;
@@ -174,6 +171,8 @@ export const useLogout = () => {
     return async () => {
         try {
             const { data } = await logout()
+            isLoggedInVar(false);
+            isLoggedOutVar(true)
             return { data }
         }
         catch (error) {

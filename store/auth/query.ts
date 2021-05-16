@@ -1,5 +1,4 @@
 import { gql, useQuery } from '@apollo/client';
-import { isLoggedInVar } from '../cache';
 
 
 const WHOAMI = gql`
@@ -12,15 +11,19 @@ const WHOAMI = gql`
 `;
 
 export const GetAuthenticatedUser = () => {
-    const { data, loading, error } = useQuery(WHOAMI)
-    return {
-        data, loading, error
+    try {
+        const { data, loading, error } = useQuery(WHOAMI)
+        return {
+            data, loading, error
+        }
+    } catch (error) {
+        throw new Error(error)
     }
 }
 
 
 interface IsLoggedIn {
-    isLoggedIn: boolean;
+    isLoggedIn: boolean
 }
 
 
@@ -34,6 +37,22 @@ export const IsLoggedIn = () => {
     const { data } = useQuery<IsLoggedIn>(IS_LOGGED_IN);
     return {
         data
+    }
+}
+
+interface IsLoggedOut {
+    isLoggedOut: boolean
+}
+
+export const IS_LOGGED_OUT = gql`
+  query IsLoggedOut {
+    isLoggedOut @client
+  }
+`;
+export const IsLoggedOut = () => {
+    const { data } = useQuery<IsLoggedOut>(IS_LOGGED_OUT);
+    return {
+        isLoggedOut: data
     }
 }
 
