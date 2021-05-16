@@ -11,9 +11,13 @@ const WHOAMI = gql`
 `;
 
 export const GetAuthenticatedUser = () => {
-    const { data, loading, error } = useQuery(WHOAMI)
-    return {
-        data, loading, error
+    try {
+        const { data, loading, error } = useQuery(WHOAMI)
+        return {
+            data, loading, error
+        }
+    } catch (error) {
+        throw new Error(error)
     }
 }
 
@@ -36,19 +40,19 @@ export const IsLoggedIn = () => {
     }
 }
 
-interface DidTryToLogin {
-    didTryToLogin: boolean
+interface IsLoggedOut {
+    isLoggedOut: boolean
 }
 
-export const DID_TRY_TO_LOGIN = gql`
-  query DidTryToLogin {
-    didTryToLogin @client
+export const IS_LOGGED_OUT = gql`
+  query IsLoggedOut {
+    isLoggedOut @client
   }
 `;
-export const DidTryToLogin = () => {
-    const { data } = useQuery<DidTryToLogin>(DID_TRY_TO_LOGIN);
+export const IsLoggedOut = () => {
+    const { data } = useQuery<IsLoggedOut>(IS_LOGGED_OUT);
     return {
-        didTryToLogin: data
+        isLoggedOut: data
     }
 }
 

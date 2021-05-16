@@ -2,8 +2,9 @@ import { ApolloClient, createHttpLink, fromPromise } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 import { API_URL } from "@env";
 import * as SecureStore from 'expo-secure-store';
-import { cache, didTryToLoginVar, isLoggedInVar } from './cache'
-import { REFRESH_TOKEN } from './auth/query'
+import { cache, isLoggedInVar, isLoggedOutVar } from './cache'
+import { IS_LOGGED_OUT, REFRESH_TOKEN } from './auth/query'
+
 
 
 let isRefreshing = false
@@ -37,10 +38,10 @@ const getNewToken = async () => {
 
             await SecureStore.setItemAsync('token', data.refreshToken.token)
             isLoggedInVar(true)
-            didTryToLoginVar(true)
+            isLoggedOutVar(false)
         } else {
             isLoggedInVar(false)
-            didTryToLoginVar(false)
+            isLoggedOutVar(true)
         }
 
     } catch (error) {
@@ -50,10 +51,22 @@ const getNewToken = async () => {
 }
 
 
-export const errorLink = onError(({ networkError, graphQLErrors, operation, forward }) => {
+const isUserLoggedOut = async () => {
+    try {
+        const { data } = await renewTokenApiClient.query({ query: IS_LOGGED_OUT })
+
+        return data === true
+    } catch (error) {
+
+    }
+}
+
+
+export const errorLink = onError(({ graphQLErrors, operation, forward }) => {
     if (graphQLErrors) {
         graphQLErrors.forEach(({ message }) => {
-            if (message === 'Unauthorized') {
+            
+            if (message === 'Unauthorized' && !isUserLoggedOut) {
                 if (!isRefreshing) {
                     setIsRefreshing(true)
 
@@ -82,7 +95,5 @@ export const errorLink = onError(({ networkError, graphQLErrors, operation, forw
                 }
             }
         });
-    } else {
-        console.log({networkError})
     }
 })

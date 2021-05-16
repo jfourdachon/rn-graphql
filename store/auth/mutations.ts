@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import * as SecureStore from 'expo-secure-store';
 import { DIET, OBJECTIVES, SignUpInfos } from '../../components/forms/signupFlow/types';
-import { isLoggedInVar } from '../cache';
+import { isLoggedInVar, isLoggedOutVar } from '../cache';
 import { IsLoggedIn } from './query';
 
 
@@ -172,6 +172,7 @@ export const useLogout = () => {
         try {
             const { data } = await logout()
             isLoggedInVar(false);
+            isLoggedOutVar(true)
             return { data }
         }
         catch (error) {
