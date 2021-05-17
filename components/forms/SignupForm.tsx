@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { StyleSheet, Text, View, Switch, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Switch, Dimensions, ActivityIndicator } from 'react-native';
 import { useSignup } from '../../store/auth/mutations';
 import Touchable from '../UI/touchable/Touchable';
 import InputText from '../UI/InputText';
@@ -17,25 +17,36 @@ type SignupValues = {
 };
 
 interface Props {
-    signupInfos: SignUpInfos
+  signupInfos: SignUpInfos;
 }
 
-const SignupForm = ({signupInfos}: Props) => {
+const SignupForm = ({ signupInfos }: Props) => {
   const [errorMail, setErrorMail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const signup = useSignup();
 
   const handleSignUp = async (values: SignupValues) => {
+    setIsLoading(true);
     setErrorMail('');
     const { email, password, username } = values;
-    const {weight, height, diet, objective} = signupInfos
-    const { data, error } = await signup({ email, password, username, weight, height, diet, objective });
+    const { weight, height, diet, objective } = signupInfos;
+    const { data, error } = await signup({
+      email,
+      password,
+      username,
+      weight,
+      height,
+      diet,
+      objective,
+    });
     if (error) {
       if (error.message === 'Email is already in use')
         setErrorMail(error.message);
     }
-    if(data) {
-      console.log({data})
+    if (data) {
+      console.log({ data });
     }
+    setIsLoading(false);
   };
 
   const handleSubmit = (values: SignupValues) => {
@@ -117,19 +128,17 @@ const SignupForm = ({signupInfos}: Props) => {
       {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
         <Text>{formik.errors.confirmPassword}</Text>
       ) : null}
-      {/* <View style={styles.switchContainer}>
-        <Text style={styles.switchText}>Are you vegetarian?</Text>
-        <Switch
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={isVegetarian ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor='#3e3e3e'
-          onValueChange={toggleSwitch}
-          value={isVegetarian}
-        />
-      </View> */}
       <Touchable onPress={() => handleSubmit(formik.values)}>
         <View style={styles.btnView}>
-          <Text style={styles.btnText}>Valider</Text>
+          {!isLoading ? (
+            <Text style={styles.btnText}>Valider</Text>
+          ) : (
+            <ActivityIndicator
+              animating={isLoading}
+              size='small'
+              color='#2e3be7'
+            />
+          )}
         </View>
       </Touchable>
     </View>
@@ -165,6 +174,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: Dimensions.get('window').width / 2,
-    borderRadius: 6
+    borderRadius: 6,
   },
 });
