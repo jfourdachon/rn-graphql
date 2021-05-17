@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import { useLogin, useResetPasswordRequest } from '../../store/auth/mutations';
 import { Colors } from '../../contants/Colors';
 import Touchable from '../UI/touchable/Touchable';
@@ -23,15 +29,26 @@ const LoginForm = () => {
   const [InvalidCrentials, setInvalidCrentials] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
   const [isToastVisible, setIsToastVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const login = useLogin();
   const resetPasswordRequest = useResetPasswordRequest();
 
   const handleLogin = async (values: LoginValues) => {
     const { email, password } = values;
-    const { data, error } = await login({ email, password }, {});
+    const { data, error, isLoginLoading } = await login(
+      { email, password },
+      {}
+    );
+    if (isLoginLoading) {
+      setIsLoading(true);
+    }
     if (error) {
       console.log(error.message);
       setInvalidCrentials(error.message);
+      setIsLoading(false);
+    }
+    if (data) {
+      setIsLoading(false);
     }
   };
 
@@ -86,6 +103,7 @@ const LoginForm = () => {
     },
   });
 
+  console.log(isLoading)
   return !forgotPassword ? (
     <View style={styles.formContainer}>
       <InputText
@@ -141,6 +159,7 @@ const LoginForm = () => {
       >
         <View style={styles.btnView}>
           <Text style={styles.btnText}>Valider</Text>
+          <ActivityIndicator animating={isLoading} size="small" color="#414446" />
         </View>
       </Touchable>
       <Toast

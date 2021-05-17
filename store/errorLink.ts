@@ -4,6 +4,7 @@ import { API_URL } from "@env";
 import * as SecureStore from 'expo-secure-store';
 import { cache, isLoggedInVar, isLoggedOutVar } from './cache'
 import { IS_LOGGED_OUT, REFRESH_TOKEN } from './auth/query'
+import { LOGOUT } from './auth/mutations';
 
 
 
@@ -74,7 +75,7 @@ export const errorLink = onError(({ graphQLErrors, operation, forward }) => {
                         getNewToken().catch(async () => {
                             resolvePendingRequests()
                             setIsRefreshing(false)
-                            // TODO logout
+                            await renewTokenApiClient.mutate({ mutation: LOGOUT })
                             await SecureStore.deleteItemAsync('token')
 
                             return forward(operation)

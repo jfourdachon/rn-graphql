@@ -92,7 +92,7 @@ const LOGIN = gql`
 
 
 export const useLogin = () => {
-    const [login] = useMutation<{ login: LoginData }, { loginDto: LoginDto }>(LOGIN, {
+    const [login, {loading, loading: isLoginLoading, error}] = useMutation<{ login: LoginData }, { loginDto: LoginDto }>(LOGIN, {
         async onCompleted({ login }) {
             if (login) {
                 await SecureStore.setItemAsync('token', login.token as string);
@@ -115,7 +115,7 @@ export const useLogin = () => {
                     }
                 }
             })
-            return { data }
+            return { data, isLoginLoading, error }
         } catch (error) {
             return { error }
         }
@@ -158,7 +158,7 @@ export const useResetPasswordRequest = () => {
     }
 }
 
-const LOGOUT = gql`
+export const LOGOUT = gql`
   mutation Logout {
     logout {
         isLoggedOut
