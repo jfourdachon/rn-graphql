@@ -34,22 +34,15 @@ const LoginForm = () => {
   const resetPasswordRequest = useResetPasswordRequest();
 
   const handleLogin = async (values: LoginValues) => {
+    setIsLoading(true);
     const { email, password } = values;
-    const { data, error, isLoginLoading } = await login(
-      { email, password },
-      {}
-    );
-    if (isLoginLoading) {
-      setIsLoading(true);
-    }
+    const { data, error } = await login({ email, password }, {});
     if (error) {
       console.log(error.message);
       setInvalidCrentials(error.message);
       setIsLoading(false);
     }
-    if (data) {
-      setIsLoading(false);
-    }
+    setIsLoading(false);
   };
 
   const handleResetPasswordRequest = async (
@@ -102,8 +95,7 @@ const LoginForm = () => {
       handleResetPasswordRequest(values);
     },
   });
-
-  console.log(isLoading)
+  console.log(isLoading);
   return !forgotPassword ? (
     <View style={styles.formContainer}>
       <InputText
@@ -130,7 +122,15 @@ const LoginForm = () => {
       ) : null}
       <Touchable onPress={() => handleSubmit(formik.values)}>
         <View style={styles.btnView}>
-          <Text style={styles.btnText}>Valider</Text>
+          {!isLoading ? (
+            <Text style={styles.btnText}>Valider</Text>
+          ) : (
+            <ActivityIndicator
+              animating={isLoading}
+              size='small'
+              color='#2e3be7'
+            />
+          )}
         </View>
       </Touchable>
       <Touchable onPress={() => setForgotPassword(true)}>
@@ -158,8 +158,15 @@ const LoginForm = () => {
         onPress={() => handleResetPasswordRequest(forgotPasswordFormik.values)}
       >
         <View style={styles.btnView}>
-          <Text style={styles.btnText}>Valider</Text>
-          <ActivityIndicator animating={isLoading} size="small" color="#414446" />
+        {!isLoading ? (
+            <Text style={styles.btnText}>Valider</Text>
+          ) : (
+            <ActivityIndicator
+              animating={isLoading}
+              size='small'
+              color='#2e3be7'
+            />
+          )}
         </View>
       </Touchable>
       <Toast
@@ -189,6 +196,9 @@ const styles = StyleSheet.create({
     marginTop: 35,
     backgroundColor: Colors.lightGrey,
     borderRadius: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   btnText: {
     fontSize: 18,
