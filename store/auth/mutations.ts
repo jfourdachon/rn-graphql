@@ -158,7 +158,7 @@ export const useResetPasswordRequest = () => {
     }
 }
 
-const LOGOUT = gql`
+export const LOGOUT = gql`
   mutation Logout {
     logout {
         isLoggedOut
