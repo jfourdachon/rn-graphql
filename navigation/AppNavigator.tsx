@@ -18,7 +18,6 @@ const prefix = Linking.makeUrl('/');
 
 const AppNavigator = () => {
   const ref = useRef(null);
-  //TODO check if token before to avoid unauthorized error
   const {
     loading,
     data: loadAuthenticatedUser,
@@ -51,12 +50,10 @@ const AppNavigator = () => {
   }, [getInitialState]);
 
   useEffect(() => {
-    // if (!isLoggedOut) {
       if (loadAuthenticatedUser) {
         isLoggedInVar(true);
       }
-    // }
-  }, []);
+  }, [loadAuthenticatedUser]);
 
   if (!isReady) {
     return <SplashScreen onAnimationFinish={() => setIsReady(true)} />;
