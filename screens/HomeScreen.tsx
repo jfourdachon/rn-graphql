@@ -25,10 +25,8 @@ const HomeScreen = () => {
 
   const onLogout = async () => {
     try {
-        // TODO create mutation to clear refreshToken
       await SecureStore.deleteItemAsync('token');
       await logout()
-    //   client.resetStore();
     } catch (error) {
       console.log(error);
     }
