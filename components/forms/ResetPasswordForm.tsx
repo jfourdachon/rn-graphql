@@ -14,25 +14,9 @@ type ResetPasswordValues = {
 };
 
 const ResetPasswordForm = () => {
-  const [InvalidCrentials, setInvalidCrentials] = useState("");
-  //   const handleLogin = async (values: LoginValues) => {
-  //     const { email, password } = values;
-  //     const { data, error } = await login({ email, password });
-  //     if (error) {
-  //       console.log(error.message);
-  //       setInvalidCrentials(error.message);
-  //     }
-  //     if (data) {
-  //       console.log(data);
-  //     }
-  //   };
 
-  //   const handleResetPasswordRequest = async (values: LoginValues) => {
-  //     const { data } = await resetPasswordRequest({ email: values.email });
-  //     if (data) {
-  //       console.log(data);
-  //     }
-  //   };
+  //TODO maybe use routes to get params from linking
+  const [InvalidCrentials, setInvalidCrentials] = useState("");
 
   const handleSubmit = (values: ResetPasswordValues) => {
     //  TODO Reset Password mutation

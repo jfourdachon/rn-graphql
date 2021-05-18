@@ -23,7 +23,6 @@ const AuthScreen = ({ navigation, route }: Props) => {
         route?.params.shouldLogin && setIsLogin(true)
     }, [route])
     const [isLogin, setIsLogin] = useState(false)
-    console.log(route)
     const toggleForm = () => {
         setIsLogin(prevState => !prevState)
     }

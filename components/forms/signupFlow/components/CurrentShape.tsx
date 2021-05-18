@@ -23,9 +23,7 @@ function range(start: number, end: number) {
 const CurrentShape = ({ signupInfos, setSignupInfos }: Props) => {
   const createHeightSelect = useMemo(() => range(120, 220), []);
   const createWeightSelect = useMemo(() => range(35, 180), []);
-
-  console.log({ createHeightSelect });
-
+  
   const setHeight = (e: string) => {
     setSignupInfos((prevState) => ({
       ...prevState,

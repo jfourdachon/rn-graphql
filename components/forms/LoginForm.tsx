@@ -95,7 +95,6 @@ const LoginForm = () => {
       handleResetPasswordRequest(values);
     },
   });
-  console.log(isLoading);
   return !forgotPassword ? (
     <View style={styles.formContainer}>
       <InputText

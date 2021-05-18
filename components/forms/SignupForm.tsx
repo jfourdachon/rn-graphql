@@ -43,9 +43,6 @@ const SignupForm = ({ signupInfos }: Props) => {
       if (error.message === 'Email is already in use')
         setErrorMail(error.message);
     }
-    if (data) {
-      console.log({ data });
-    }
     setIsLoading(false);
   };
 
