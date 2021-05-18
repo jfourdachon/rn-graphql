@@ -30,7 +30,7 @@ const AppNavigator = () => {
     prefixes: [prefix],
     config: {
       screens: {
-        AuthScreen: 'auth',
+        ResetPassword: 'reset-password',
         NotFound: '*',
       },
     },
